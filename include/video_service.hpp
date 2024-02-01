@@ -2,6 +2,7 @@
 #define __VIDEO_SERVICE_H_
 
 #include <cstdint>
+#include <SDL/SDL.h>
 #include "graphics2d.hpp"
 
 class VideoService {
@@ -12,7 +13,10 @@ class VideoService {
 };
 
 class VideoServiceSDL1: public VideoService {
-
+    void init() {SDL_Init(SDL_INIT_VIDEO);}
+    void exit() {SDL_Quit();}
+    bool draw_image(GMImage2D image, GMRect src_rect, GMRect dst_rect);
+    bool clear_canvas();
 };
 
 #endif
