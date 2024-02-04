@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include "graphics2d.hpp"
 
 class VideoService {
@@ -16,6 +17,7 @@ class VideoService {
 
 class VideoServiceSDL1: public VideoService {
     uint8_t status;
+    SDL_Surface* main_surface;
 
     public:
     void init();
@@ -23,6 +25,9 @@ class VideoServiceSDL1: public VideoService {
     bool draw_image(GMImage2D image, GMRect src_rect, GMRect dst_rect);
     bool clear_canvas();
     uint8_t get_status(){return this->status;}
+
+    private:
+    void sdlrect_from_gmrect(GMRect& src, SDL_Rect& dst);
 };
 
 #endif
