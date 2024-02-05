@@ -7,7 +7,7 @@ void VideoServiceSDL1::init() {
 }
 
 void VideoServiceSDL1::exit() {
-    SDL_Quit();
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
 bool VideoServiceSDL1::draw_image(GMImage2D image, GMRect src_rect, GMRect dst_rect) {
