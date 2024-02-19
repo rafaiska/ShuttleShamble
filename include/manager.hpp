@@ -7,13 +7,17 @@
 #include "game_object.hpp"
 
 class GMManager {
-    private:
-        static VideoService* service;
+    protected:
+        static GMManager* manager;
+        static VideoService* video_service;
         static std::vector<GMObject> objects;
+
+        GMManager(){}
     
     public:
-        static void start_test_services();
-        static std::vector<GMObject> get_objects() {return objects;}
+        GMManager* get_instance();
+        void start_test_services();
+        std::vector<GMObject> get_objects() {return objects;}
 };
 
 #endif
