@@ -4,9 +4,8 @@
 #include <string>
 
 class GMComponent {
-    private:
-        std::string name;
     public:
+        virtual std::string get_name() = 0;
         virtual void update(float delta) = 0;
 };
 
