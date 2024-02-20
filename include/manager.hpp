@@ -15,9 +15,10 @@ class GMManager {
         GMManager(){}
     
     public:
-        GMManager* get_instance();
+        static GMManager* get_instance();
         void start_test_services();
         std::vector<GMObject> get_objects() {return objects;}
+        void log_error(GMObject* object, std::string message);
 };
 
 #endif

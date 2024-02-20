@@ -3,3 +3,7 @@
 void GMCpCollision::update(float delta)
 {
 }
+
+void GMCpCollision::set_speed(GMVector new_speed)
+{
+}

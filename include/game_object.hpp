@@ -6,6 +6,7 @@
 
 #include "utils.hpp"
 #include "game_component.hpp"
+#include "manager.hpp"
 
 class GMObject {
     protected:
@@ -15,6 +16,7 @@ class GMObject {
         
     public:
         void update(float delta);
+        void set_position(GMVector new_position);
 };
 
 #endif
