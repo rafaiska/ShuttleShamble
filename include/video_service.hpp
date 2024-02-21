@@ -5,6 +5,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "graphics2d.hpp"
+#include "utils.hpp"
 
 class VideoService {
     public:

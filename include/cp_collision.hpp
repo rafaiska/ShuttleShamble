@@ -13,7 +13,7 @@ class GMCpCollision: public GMComponent {
                 uint8_t elasticity;
                 std::string collider_type;
         public:
-                GMCpCollision(GMVector position) {this->position = position;}
+                GMCpCollision(GMVector position) {this->position = GMVector(position.x, position.y);}
                 std::string get_name(){return "GMCpCollision";}
                 void update(float delta);
                 void set_speed(GMVector new_speed);

@@ -5,12 +5,12 @@
 #include "main_loop.hpp"
 
 class CollisionTest : public testing::Test {
-    private:
+    protected:
         GMManager* manager;
         GMMainLoop main_loop;
         GMObject obj1, obj2;
-    
-    protected:
+
+        CollisionTest(){}
 
         void SetUp() override {
             manager = GMManager::get_instance();
@@ -25,10 +25,9 @@ class CollisionTest : public testing::Test {
         void TearDown() override {
             delete manager;
         }
-
-        TEST_F(CollisionTest, happy_day) {
-            obj1.set_speed(GMVector(5, 5));
-            main_loop.tick(1.0);
-            
-        }
 };
+
+TEST_F(CollisionTest, happy_day) {
+    ((GMCpCollision*)obj1.getComponent("GMCpCollision"))->set_speed(GMVector(5, 5));
+    main_loop.tick(1.0);
+}
