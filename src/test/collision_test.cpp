@@ -19,7 +19,7 @@ class CollisionTest : public testing::Test {
             manager->start_test_services();
 
             obj1.set_position(GMVector(0, 0));
-            obj1.set_position(GMVector(5, 5));
+            obj1.set_position(GMVector(16, 16));
         }
 
         void TearDown() override {
@@ -28,6 +28,6 @@ class CollisionTest : public testing::Test {
 };
 
 TEST_F(CollisionTest, happy_day) {
-    ((GMCpCollision*)obj1.getComponent("GMCpCollision"))->set_speed(GMVector(5, 5));
+    ((GMCpCollider*)obj1.getComponent("GMCpCollider"))->set_speed(GMVector(5, 5));
     main_loop.tick(1.0);
 }

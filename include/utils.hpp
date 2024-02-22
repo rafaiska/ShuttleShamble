@@ -17,6 +17,11 @@ struct GMVector {
     float y;
     GMVector(float x, float y) {this->x = x;this->y = y;}
     GMVector() {GMVector(0.0, 0.0);}
+    GMVector& operator+(GMVector const& rhs);
+    GMVector& operator*(float const& scalar);
 };
+
+void get_position_from_rect(GMRect rect, GMVector &position);
+void set_rect_position(GMRect &rect, GMVector position);
 
 #endif

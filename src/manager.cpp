@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+GMManager* GMManager::manager = nullptr;
+
 GMManager* GMManager::get_instance() {
     if(manager == nullptr) {
         manager = new GMManager();

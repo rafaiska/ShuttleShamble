@@ -1,9 +1,12 @@
 #include "cp_collision.hpp"
 
-void GMCpCollision::update(float delta)
-{
+void GMCpCollider::update(float delta) {
+    position = position + (speed * delta);
 }
 
-void GMCpCollision::set_speed(GMVector new_speed)
-{
+void GMCpCollider::set_speed(GMVector new_speed) {
+}
+
+bool GMCpCollider::collided_with(GMCpCollider other) {
+
 }

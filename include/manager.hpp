@@ -9,8 +9,8 @@
 class GMManager {
     protected:
         static GMManager* manager;
-        static VideoService* video_service;
-        static std::vector<GMObject> objects;
+        VideoService* video_service;
+        std::vector<GMObject> objects;
 
         GMManager(){}
     
