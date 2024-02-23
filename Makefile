@@ -10,5 +10,5 @@ obj/%.o: src/%.cpp
 obj/test/%.o: src/test/%.cpp
 	g++ ${CFLAGS} -c -g -o $@ $^
 
-all_tests.out: obj/cp_collision.o obj/game_object.o obj/main_loop.o obj/manager.o obj/video_service.o obj/test/collision_test.o src/test/gtest_main.cpp
+all_tests.out: obj/cp_collision.o obj/game_object.o obj/main_loop.o obj/manager.o obj/video_service.o obj/utils.o obj/test/collision_test.o src/test/gtest_main.cpp
 	g++ ${CFLAGS} -g -o $@ $^ -lgtest -lpthread -lSDL -lSDL_image

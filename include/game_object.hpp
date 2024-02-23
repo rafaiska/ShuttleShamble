@@ -22,6 +22,7 @@ class GMObject {
         std::string get_last_error() {return last_error;}
         void clear_error() {last_error.clear();}
         bool error_detected() {return !last_error.empty();}
+        std::vector<GMComponent*> get_components() {return components;}
 };
 
 #endif
