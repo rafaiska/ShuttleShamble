@@ -7,6 +7,6 @@ void GMCpCollider::update(float delta) {
 void GMCpCollider::set_speed(GMVector new_speed) {
 }
 
-bool GMCpCollider::collided_with(GMCpCollider other) {
+bool GMCpCollider::collided_with(const GMCpCollider& other) {
     return false;
 }

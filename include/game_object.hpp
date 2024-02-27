@@ -3,26 +3,26 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 #include "utils.hpp"
-#include "game_component.hpp"
+#include "cp_collision.hpp"
 
 class GMObject {
     protected:
         uint32_t id;
         GMRect transform;
         std::string last_error;
-        std::vector<GMComponent*> components;
+        GMCpCollider* collider;
         
     public:
         GMObject(){}
         void update(float delta);
         void set_position(GMVector new_position);
-        GMComponent* getComponent(std::string name);
         std::string get_last_error() {return last_error;}
         void clear_error() {last_error.clear();}
         bool error_detected() {return !last_error.empty();}
-        std::vector<GMComponent*> get_components() {return components;}
+        GMCpCollider* get_collider() {return collider;}
 };
 
 #endif

@@ -2,9 +2,7 @@
 
 void GMObject::update(float delta)
 {
-    for(GMComponent* c : components) {
-        c->update(delta);
-    }
+    collider->update(delta);
 }
 
 void GMObject::set_position(GMVector new_position)
@@ -15,14 +13,4 @@ void GMObject::set_position(GMVector new_position)
     }
     transform.x = (uint32_t) new_position.x;
     transform.y = (uint32_t) new_position.y;
-}
-
-GMComponent *GMObject::getComponent(std::string name)
-{
-    for (GMComponent* c : components) {
-        if (c->get_name() == name) {
-            return c;
-        }
-    }
-    return nullptr;
 }

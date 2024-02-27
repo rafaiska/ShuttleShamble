@@ -4,6 +4,10 @@
 
 GMManager* GMManager::manager = nullptr;
 
+GMManager::GMManager() {
+    initialize_handlers();
+}
+
 GMManager* GMManager::get_instance() {
     if(manager == nullptr) {
         manager = new GMManager();
