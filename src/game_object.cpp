@@ -5,6 +5,12 @@ void GMObject::update(float delta)
     collider->update(delta);
 }
 
+GMObject::~GMObject()
+{
+    if (collider != nullptr)
+        delete collider;
+}
+
 void GMObject::set_position(GMVector new_position)
 {
     if(new_position.x < 0 || new_position.y < 0) {

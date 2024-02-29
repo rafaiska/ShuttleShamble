@@ -13,6 +13,7 @@ class GMCpCollider {
                 uint8_t collision_mask;
                 uint8_t elasticity;
                 std::string collider_tag;
+                GMCpCollider* collided_with_other;
         public:
                 GMCpCollider(GMVector position) {this->position = GMVector(position.x, position.y);}
                 void update(float delta);
@@ -21,6 +22,8 @@ class GMCpCollider {
                 bool moved() {return new_position.x != position.x || new_position.y != position.y;}
                 void reset_position() {new_position.x = position.x; new_position.y = position.y;}
                 void commit_position() {position.x = new_position.x; position.y = new_position.y;}
+                void set_collided_with(GMCpCollider* other);
+                GMCpCollider* get_collided_with(){return collided_with_other;}
 };
 
 #endif

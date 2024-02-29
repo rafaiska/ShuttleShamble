@@ -17,11 +17,13 @@ class GMObject {
         
     public:
         GMObject(){}
+        ~GMObject();
         void update(float delta);
         void set_position(GMVector new_position);
         std::string get_last_error() {return last_error;}
         void clear_error() {last_error.clear();}
         bool error_detected() {return !last_error.empty();}
+        void create_collider() {collider = new GMCpCollider(GMVector(transform.x, transform.y));}
         GMCpCollider* get_collider() {return collider;}
 };
 

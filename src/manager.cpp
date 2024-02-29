@@ -4,8 +4,8 @@
 
 GMManager* GMManager::manager = nullptr;
 
-GMManager::GMManager() {
-    initialize_handlers();
+GMManager::GMManager()
+{
 }
 
 GMManager* GMManager::get_instance() {
