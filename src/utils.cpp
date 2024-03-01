@@ -10,6 +10,11 @@ void set_rect_position(GMRect &rect, GMVector position) {
     rect.y = (uint32_t) position.y;
 }
 
+void set_position_to_rect_center(GMVector& position, const GMRect& rect) {
+    position.x = ((float)(rect.x + rect.w))/2.0;
+    position.y = ((float)(rect.y + rect.h))/2.0;
+}
+
 GMVector& GMVector::operator+(GMVector const &rhs)
 {
     x += rhs.x;
@@ -20,5 +25,12 @@ GMVector& GMVector::operator+(GMVector const &rhs)
 GMVector& GMVector::operator*(float const& scalar) {
     x *= scalar;
     y *= scalar;
+    return *this;
+}
+
+GMVector &GMVector::operator=(GMVector const &rhs)
+{
+    x = rhs.x;
+    y = rhs.y;
     return *this;
 }

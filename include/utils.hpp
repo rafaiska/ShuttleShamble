@@ -19,9 +19,11 @@ struct GMVector {
     GMVector() {GMVector(0.0, 0.0);}
     GMVector& operator+(GMVector const& rhs);
     GMVector& operator*(float const& scalar);
+    GMVector& operator=(GMVector const& rhs);
 };
 
 void get_position_from_rect(GMRect rect, GMVector &position);
 void set_rect_position(GMRect &rect, GMVector position);
+void set_position_to_rect_center(GMVector& position, const GMRect& rect);
 
 #endif

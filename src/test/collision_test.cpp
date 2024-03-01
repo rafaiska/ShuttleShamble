@@ -21,10 +21,12 @@ class CollisionTest : public testing::Test {
 
             obj1 = main_loop.create_object();
             obj1->set_position(GMVector(0, 0));
+            obj1->set_dimensions(GMVector(16, 16));
             obj1->create_collider();
 
             obj2 = main_loop.create_object();
             obj2->set_position(GMVector(16, 16));
+            obj2->set_dimensions(GMVector(16, 16));
             obj2->create_collider();
         }
 
