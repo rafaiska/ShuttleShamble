@@ -15,22 +15,35 @@ void set_position_to_rect_center(GMVector& position, const GMRect& rect) {
     position.y = ((float)(rect.y + rect.h))/2.0;
 }
 
-GMVector& GMVector::operator+(GMVector const &rhs)
+GMVector& GMVector::operator+(const GMVector& rhs)
 {
     x += rhs.x;
     y += rhs.y;
     return *this;
 }
 
-GMVector& GMVector::operator*(float const& scalar) {
+GMVector& GMVector::operator*(float scalar) {
     x *= scalar;
     y *= scalar;
     return *this;
 }
 
-GMVector &GMVector::operator=(GMVector const &rhs)
+GMVector &GMVector::operator=(const GMVector& rhs)
 {
     x = rhs.x;
     y = rhs.y;
     return *this;
+}
+
+float distance_between(const GMVector& vectorA, const GMVector& vectorB)
+{
+    return sqrt((vectorB.x-vectorA.x)*(vectorB.x-vectorA.x) + (vectorB.y-vectorA.y)*(vectorB.y-vectorA.y));
+}
+
+GMVector center_of_mass(const GMRect& rect)
+{
+    GMVector ret;
+    ret.x = rect.x + ((float)rect.w / 2.0);
+    ret.y = rect.y + ((float)rect.h / 2.0);
+    return ret;
 }

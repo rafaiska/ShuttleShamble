@@ -16,7 +16,7 @@ class GMCpCollider {
                 std::string collider_tag;
                 GMCpCollider* collided_with_other;
         public:
-                GMCpCollider(GMVector position) {this->position = position;}
+                GMCpCollider(const GMVector& position, float aura_radius);
                 void update(float delta);
                 void set_speed(GMVector new_speed);
                 bool collided_with(const GMCpCollider& other);
@@ -26,6 +26,8 @@ class GMCpCollider {
                 void set_collided_with(GMCpCollider* other);
                 GMCpCollider* get_collided_with(){return collided_with_other;}
                 void set_aura_radius(float new_radius){aura_radius = new_radius;}
+                float get_aura_radius() const {return aura_radius;}
+                GMVector get_position() const {return position;}
 };
 
 #endif

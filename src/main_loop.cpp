@@ -45,6 +45,9 @@ void GMMainLoop::update_colliders()
             }
         }
     }
+
+    moving_colliders.clear();
+    stopped_colliders.clear();
 }
 
 void GMMainLoop::track_colliders(GMCpCollider* colliderA, GMCpCollider* colliderB, std::set<GMCpCollider*>& collider_set) {
