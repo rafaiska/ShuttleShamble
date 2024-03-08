@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <string>
 
-#include "video_service.hpp"
+#include "video_service_mock.hpp"
 #include "game_object.hpp"
 
 class GMManager {
@@ -19,6 +19,7 @@ class GMManager {
         static GMManager* get_instance();
         void start_test_services();
         void log_error(GMObject* object, std::string message);
+        VideoService* get_video_service(){return video_service;}
 };
 
 #endif
