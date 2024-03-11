@@ -4,6 +4,8 @@
 #include<cstdint>
 #include<string>
 
+#include "utils.hpp"
+
 #define ANIMATION_MODE_STATIC 0
 
 struct GMImage2D {
@@ -12,7 +14,9 @@ struct GMImage2D {
     uint8_t h;
 
     public:
+        GMImage2D() {GMImage2D("");}
         GMImage2D(std::string path) {this->image_path = path;}
+        GMImage2D operator=(const GMImage2D& rhs) {this->image_path = rhs.image_path; this->w = rhs.w; this->h = rhs.h; return *this;}
 };
 
 struct GMTile {
