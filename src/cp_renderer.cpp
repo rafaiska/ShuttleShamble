@@ -1,10 +1,14 @@
 #include "cp_renderer.hpp"
 
 bool GMCpRenderer::render(){
-    VideoService* service = GMManager::get_instance()->get_video_service();
     GMSprite* sprite = get_current_sprite();
+    draw_tiles(sprite);
+}
+
+bool GMCpRenderer::draw_tiles(GMSprite* sprite) {
+    VideoService* service = GMManager::get_instance()->get_video_service();
     for (int i = 0; i < sprite->h * sprite->w; ++i) {
-        service->draw_image(*(sprite->tiles[i].image), sprite->tiles[i].boundaries, get_rect(i, sprite->h, sprite->w));
+        service->draw_tile(sprite->tiles[i], position + get_tile_relative_position(sprite, i));
     }
 }
 

@@ -10,7 +10,7 @@ class VideoServiceSDL1: public VideoService {
     public:
     void init();
     void exit();
-    bool draw_image(GMImage2D image, GMRect src_rect, GMRect dst_rect);
+    bool draw_tile(const GMTile& tile, const GMVector& position);
     bool clear_canvas();
     uint8_t get_status(){return this->status;}
 

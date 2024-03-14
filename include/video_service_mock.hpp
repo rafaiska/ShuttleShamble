@@ -6,21 +6,20 @@
 #include "video_service.hpp"
 #include "graphics2d.hpp"
 
-struct DisplayedImage {
-    GMImage2D image;
-    GMRect src_rect;
-    GMRect dst_rect;
-    DisplayedImage(GMImage2D image, GMRect src_rect, GMRect dst_rect) {this->image = image; this->src_rect = src_rect; this->dst_rect = dst_rect;}
+struct GMDisplayedTile {
+    const GMTile* tile;
+    GMVector position;
+    GMDisplayedTile(const GMTile* tile, const GMVector position) {this->tile = tile; this->position = position;}
 };
 
 class VideoServiceMock: public VideoService {
     private:
-        std::vector<DisplayedImage> displayed_images;
+        std::vector<GMDisplayedTile> displayed_tiles;
     
     public:
         void init(){}
         void exit(){}
-        bool draw_image(GMImage2D image, GMRect src_rect, GMRect dst_rect);
+        bool draw_tile(const GMTile& tile, const GMVector& position);
         bool clear_canvas();
         uint8_t get_status(){return 0;}
 };

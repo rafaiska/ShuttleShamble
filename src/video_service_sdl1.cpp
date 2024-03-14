@@ -10,15 +10,15 @@ void VideoServiceSDL1::exit() {
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-bool VideoServiceSDL1::draw_image(GMImage2D image, GMRect src_rect, GMRect dst_rect) {
-    SDL_Surface* img_surface = IMG_Load(image.image_path.c_str());
-    if (img_surface == NULL) {
-        std::cout << "COULDN'T LOAD IMAGE FILE: " + image.image_path;
-    }
-    SDL_Rect src_rect_sdl, dst_rect_sdl;
-    sdlrect_from_gmrect(src_rect, src_rect_sdl);
-    sdlrect_from_gmrect(dst_rect, dst_rect_sdl);
-    SDL_BlitSurface(img_surface, &src_rect_sdl, main_surface, &dst_rect_sdl);
+bool VideoServiceSDL1::draw_tile(const GMTile& tile, const GMVector& position) {
+    // SDL_Surface* img_surface = IMG_Load(image.image_path.c_str());
+    // if (img_surface == NULL) {
+    //     std::cout << "COULDN'T LOAD IMAGE FILE: " + image.image_path;
+    // }
+    // SDL_Rect src_rect_sdl, dst_rect_sdl;
+    // sdlrect_from_gmrect(src_rect, src_rect_sdl);
+    // sdlrect_from_gmrect(dst_rect, dst_rect_sdl);
+    // SDL_BlitSurface(img_surface, &src_rect_sdl, main_surface, &dst_rect_sdl);
     return false;
 }
 
