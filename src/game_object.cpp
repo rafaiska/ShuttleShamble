@@ -39,3 +39,8 @@ void GMObject::create_collider()
     float circumscribed_circle = sqrt(bigger_edge_size*bigger_edge_size + smaller_edge_size*smaller_edge_size) / 2.0;
     collider = new GMCpCollider(position, (inscribed_circle + circumscribed_circle) / 2.0);
 }
+
+void GMObject::create_renderer()
+{
+    renderer = new GMCpRenderer();
+}

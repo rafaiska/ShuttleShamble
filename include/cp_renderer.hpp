@@ -14,6 +14,8 @@ class GMCpRenderer {
         bool draw_tiles(GMSprite* sprite);
         GMRect get_rect(uint16_t index, uint8_t w, uint8_t h);
     public:
+        GMCpRenderer(){}
+        ~GMCpRenderer();
         bool render();
 };
 

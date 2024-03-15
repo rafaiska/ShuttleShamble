@@ -1,14 +1,10 @@
-#ifndef __GRAPHICS2D_H__
-#define __GRAPHICS2D_H__
+#ifndef _IMAGE_H_
+#define _IMAGE_H_
 
-#include<cstdint>
-#include<string>
+#include <string>
+#include <cstdint>
 
-#include "utils.hpp"
-
-#define ANIMATION_MODE_STATIC 0
-
-struct GMImage2D {
+class GMImage2D {
     std::string image_path;
     uint8_t w;
     uint8_t h;
@@ -17,17 +13,6 @@ struct GMImage2D {
         GMImage2D() {GMImage2D("");}
         GMImage2D(std::string path) {this->image_path = path;}
         GMImage2D operator=(const GMImage2D& rhs) {this->image_path = rhs.image_path; this->w = rhs.w; this->h = rhs.h; return *this;}
-};
-
-struct GMTile {
-    GMImage2D* image;
-    GMRect boundaries;
-};
-
-struct GMSprite {
-    GMTile* tiles;
-    uint8_t w;
-    uint8_t h;
 };
 
 #endif

@@ -8,6 +8,7 @@
 
 #include "utils.hpp"
 #include "cp_collision.hpp"
+#include "cp_renderer.hpp"
 
 class GMObject {
     protected:
@@ -15,6 +16,7 @@ class GMObject {
         GMRect transform;
         std::string last_error;
         GMCpCollider* collider;
+        GMCpRenderer* renderer;
         
     public:
         GMObject(){}
@@ -27,6 +29,7 @@ class GMObject {
         bool error_detected() {return !last_error.empty();}
         void create_collider();
         GMCpCollider* get_collider() {return collider;}
+        void create_renderer();
 };
 
 #endif

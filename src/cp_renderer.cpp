@@ -1,5 +1,13 @@
 #include "cp_renderer.hpp"
 
+GMCpRenderer::~GMCpRenderer()
+{
+    for (int i = 0; i < n_sprites; ++i)
+    {
+        delete(sprites + i);
+    }
+}
+
 bool GMCpRenderer::render(){
     GMSprite* sprite = get_current_sprite();
     draw_tiles(sprite);
