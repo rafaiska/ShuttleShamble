@@ -10,6 +10,8 @@ class GMTile {
 
     public:
         GMTile();
+        void set_image(std::string path, uint16_t w, uint16_t h);
+        void set_boundaries(uint16_t x, uint16_t y, uint16_t w, uint16_t h);
 };
 
 #endif

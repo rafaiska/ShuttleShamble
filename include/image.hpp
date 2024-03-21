@@ -6,13 +6,14 @@
 
 class GMImage2D {
     std::string image_path;
-    uint8_t w;
-    uint8_t h;
+    uint16_t w;
+    uint16_t h;
 
     public:
-        GMImage2D() {GMImage2D("");}
-        GMImage2D(std::string path) {this->image_path = path;}
-        GMImage2D operator=(const GMImage2D& rhs) {this->image_path = rhs.image_path; this->w = rhs.w; this->h = rhs.h; return *this;}
+        GMImage2D() {GMImage2D("", 0, 0);}
+        GMImage2D(std::string path, uint16_t w, uint16_t h) {this->image_path = path; this->w = w; this->h = h;}
+        void set_path(std::string path) {this->image_path = path;}
+        void set_dimensions(uint16_t w, uint16_t h) {this->w = w; this->h = h;}
 };
 
 #endif
