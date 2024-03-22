@@ -3,8 +3,8 @@
 
 #include <vector>
 
+#include "tile.hpp"
 #include "video_service.hpp"
-#include "graphics2d.hpp"
 
 struct GMDisplayedTile {
     const GMTile* tile;

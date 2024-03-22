@@ -4,7 +4,8 @@
 #include <cstdint>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include "graphics2d.hpp"
+
+#include "tile.hpp"
 #include "utils.hpp"
 
 class VideoService {

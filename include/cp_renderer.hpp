@@ -1,7 +1,7 @@
 #ifndef _CP_RENDERER_H_
 #define _CP_RENDERER_H_
 
-#include "graphics2d.hpp"
+#include "sprite.hpp"
 #include "manager.hpp"
 
 class GMCpRenderer {
