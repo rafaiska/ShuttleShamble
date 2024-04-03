@@ -22,19 +22,24 @@ GMVector& operator*(const float& scalar, GMVector& rhs)
     return rhs * scalar;
 }
 
-void get_position_from_rect(GMRect rect, GMVector &position) {
+void get_position_from_rect(const GMRect& rect, GMVector &position) {
     position.x = (float) rect.x;
     position.y = (float) rect.y;
 }
 
-void set_rect_position(GMRect &rect, GMVector position) {
+void set_rect_position(GMRect &rect, const GMVector& position) {
     rect.x = (uint32_t) position.x;
     rect.y = (uint32_t) position.y;
 }
 
-void set_position_to_rect_center(GMVector& position, const GMRect& rect) {
-    position.x = ((float)(rect.x + rect.w))/2.0;
-    position.y = ((float)(rect.y + rect.h))/2.0;
+GMCircle get_aura(const GMRect &r)
+{
+    GMVector center = center_of_mass(r);
+    float bigger_edge_size = r.w > r.h ? r.w : r.h;
+    float smaller_edge_size = r.w < r.h ? r.w : r.h;
+    float inscribed_circle_radius = smaller_edge_size / 2.0;
+    float circumscribed_circle_radius = sqrt(bigger_edge_size*bigger_edge_size + smaller_edge_size*smaller_edge_size) / 2.0;
+    return GMCircle(center.x, center.y, (inscribed_circle_radius + circumscribed_circle_radius) / 2.0);
 }
 
 GMVector& GMVector::operator+(const GMVector& rhs)
@@ -68,4 +73,19 @@ GMVector center_of_mass(const GMRect& rect)
     ret.x = rect.x + ((float)rect.w / 2.0);
     ret.y = rect.y + ((float)rect.h / 2.0);
     return ret;
+}
+
+GMCircle::GMCircle(float x, float y, float r)
+{
+    position.x = x;
+    position.y = y;
+    radius = r;
+}
+
+GMCircle& GMCircle::operator=(const GMCircle& other)
+{
+    this->position.x = other.position.x;
+    this->position.y = other.position.y;
+    this->radius = other.radius;
+    return *this;
 }

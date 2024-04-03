@@ -20,7 +20,8 @@ class UtilsTest : public testing::Test {
         }
 };
 
-TEST_F(UtilsTest, test_vector_operators) {
+TEST_F(UtilsTest, test_vector_operators)
+{
     GMVector vectorB(1, 5);
     GMVector vectorC = vectorA + vectorB + GMVector(3, 3);
 
@@ -36,4 +37,37 @@ TEST_F(UtilsTest, test_vector_operators) {
 
     ASSERT_EQ(vectorC.x, 15);
     ASSERT_EQ(vectorC.y, 15);
+}
+
+TEST_F(UtilsTest, test_rect_operators)
+{
+    GMRect rectB = rectA;
+
+    ASSERT_EQ(rectB.x, 10);
+    ASSERT_EQ(rectB.y, 5);
+    ASSERT_EQ(rectB.h, 8);
+    ASSERT_EQ(rectB.w, 8);
+}
+
+TEST_F(UtilsTest, test_get_position_from_rect)
+{
+    get_position_from_rect(rectA, vectorA);
+
+    ASSERT_EQ(vectorA.x, 10);
+    ASSERT_EQ(vectorA.y, 5);
+}
+
+TEST_F(UtilsTest, test_set_rect_position)
+{
+    set_rect_position(rectA, vectorA);
+
+    ASSERT_EQ(rectA.x, 11);
+    ASSERT_EQ(rectA.y, 7);
+}
+
+TEST_F(UtilsTest, test_distance_between)
+{
+    GMVector vectorB(15, 7);
+    
+    ASSERT_EQ(distance_between(vectorA, vectorB), 4.0);
 }

@@ -26,9 +26,18 @@ struct GMVector {
 };
 GMVector& operator*(const float& scalar, GMVector& rhs);
 
-void get_position_from_rect(GMRect rect, GMVector &position);
-void set_rect_position(GMRect &rect, GMVector position);
-void set_position_to_rect_center(GMVector& position, const GMRect& rect);
+struct GMCircle
+{
+    GMVector position;
+    float radius;
+    GMCircle(float x, float y, float r);
+    GMCircle(){GMCircle(0, 0, 0);}
+    GMCircle& operator=(const GMCircle& other);
+};
+
+void get_position_from_rect(const GMRect& rect, GMVector &position);
+void set_rect_position(GMRect &rect, const GMVector& position);
+GMCircle get_aura(const GMRect& r);
 float distance_between(const GMVector& vectorA, const GMVector& vectorB);
 GMVector center_of_mass(const GMRect& rect);
 
