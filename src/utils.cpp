@@ -1,5 +1,27 @@
 #include "utils.hpp"
 
+GMRect::GMRect(uint32_t w, uint32_t h, uint32_t x, uint32_t y)
+{
+    this->w = w;
+    this->h = h;
+    this->x = x;
+    this->y = y;
+}
+
+GMRect& GMRect::operator=(const GMRect& lhr)
+{
+    this->w = lhr.w;
+    this->h = lhr.h;
+    this->x = lhr.x;
+    this->y = lhr.y;
+    return *this;
+}
+
+GMVector& operator*(const float& scalar, GMVector& rhs)
+{
+    return rhs * scalar;
+}
+
 void get_position_from_rect(GMRect rect, GMVector &position) {
     position.x = (float) rect.x;
     position.y = (float) rect.y;

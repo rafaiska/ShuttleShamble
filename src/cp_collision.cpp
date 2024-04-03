@@ -12,6 +12,11 @@ void GMCpCollider::update(float delta) {
     new_position = position + (speed * delta);
 }
 
+bool GMCpCollider::moved()
+{
+    return(new_position == position);
+}
+
 void GMCpCollider::set_speed(GMVector new_speed) {
     speed = new_speed;
 }

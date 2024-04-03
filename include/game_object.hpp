@@ -30,6 +30,7 @@ class GMObject {
         void create_collider();
         GMCpCollider* get_collider() {return collider;}
         void create_renderer();
+        GMCpRenderer* get_renderer() {return renderer;}
 };
 
 #endif

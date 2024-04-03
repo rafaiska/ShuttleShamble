@@ -20,7 +20,7 @@ class GMCpCollider {
                 void update(float delta);
                 void set_speed(GMVector new_speed);
                 bool collided_with(const GMCpCollider& other);
-                bool moved() {return new_position.x != position.x || new_position.y != position.y;}
+                bool moved();
                 void reset_position() {new_position.x = position.x; new_position.y = position.y;}
                 void commit_position() {position.x = new_position.x; position.y = new_position.y;}
                 void set_collided_with(GMCpCollider* other);

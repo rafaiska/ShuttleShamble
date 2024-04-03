@@ -10,12 +10,15 @@ class GMMainLoop {
         std::vector<GMCpCollider*> stopped_colliders;
         std::vector<GMCpCollider*> moving_colliders;
         std::vector<GMObject*> objects;
+        std::vector<GMCpRenderer*> renderers;
 
         void update_colliders();
+        void update_renderers();
         void track_colliders(GMCpCollider* colliderA, GMCpCollider* colliderB, std::set<GMCpCollider*>& collider_set);
 
     public:
         void enqueue_collider(GMCpCollider* collider);
+        void enqueue_renderer(GMCpRenderer* renderer);
         void tick(float delta);
         void main_loop();
         GMObject* create_object();

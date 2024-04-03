@@ -23,6 +23,13 @@ void GMMainLoop::enqueue_collider(GMCpCollider* collider)
     }
 }
 
+void GMMainLoop::enqueue_renderer(GMCpRenderer *renderer)
+{
+    if (renderer != nullptr && renderer->is_visible()) {
+        renderers.push_back(renderer);
+    }
+}
+
 void GMMainLoop::update_colliders()
 {
     std::set<GMCpCollider*> collided;
@@ -50,6 +57,10 @@ void GMMainLoop::update_colliders()
     stopped_colliders.clear();
 }
 
+void GMMainLoop::update_renderers()
+{
+}
+
 void GMMainLoop::track_colliders(GMCpCollider* colliderA, GMCpCollider* colliderB, std::set<GMCpCollider*>& collider_set) {
     colliderA->set_collided_with(colliderB);
     collider_set.insert(colliderA);
@@ -63,8 +74,10 @@ void GMMainLoop::tick(float delta)
     for (GMObject *object : objects) {
         object->update(delta);
         enqueue_collider(object->get_collider());
+        enqueue_renderer(object->get_renderer());
     }
     update_colliders();
+    update_renderers();
 }
 
 void GMMainLoop::main_loop()

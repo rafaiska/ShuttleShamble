@@ -9,9 +9,9 @@ struct GMRect {
     uint32_t h;
     uint32_t x;
     uint32_t y;
-    GMRect(uint32_t w, uint32_t h, uint32_t x, uint32_t y) {this->w = w;this->h = h;this->x = x;this->y = y;}
+    GMRect(uint32_t w, uint32_t h, uint32_t x, uint32_t y);
     GMRect() {GMRect(0, 0, 0, 0);}
-    GMRect& operator=(const GMRect& lhr){this->w = lhr.w; this->h = lhr.h; this->x = lhr.x; this->y = lhr.y;}
+    GMRect& operator=(const GMRect& lhr);
 };
 
 struct GMVector {
@@ -22,7 +22,9 @@ struct GMVector {
     GMVector& operator+(const GMVector& rhs);
     GMVector& operator*(float scalar);
     GMVector& operator=(const GMVector& rhs);
+    bool operator==(const GMVector& other) {return this->x == other.x && this->y == other.y;}
 };
+GMVector& operator*(const float& scalar, GMVector& rhs);
 
 void get_position_from_rect(GMRect rect, GMVector &position);
 void set_rect_position(GMRect &rect, GMVector position);
