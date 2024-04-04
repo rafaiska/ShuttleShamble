@@ -71,3 +71,11 @@ TEST_F(UtilsTest, test_distance_between)
     
     ASSERT_EQ(distance_between(vectorA, vectorB), 4.0);
 }
+
+TEST_F(UtilsTest, test_center_of_mass)
+{
+    GMVector com = center_of_mass(rectA);
+
+    ASSERT_EQ(com.x, 14);
+    ASSERT_EQ(com.y, 9);
+}

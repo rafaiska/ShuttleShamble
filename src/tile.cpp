@@ -1,6 +1,10 @@
 #include "tile.hpp"
 
-GMTile::GMTile() {}
+GMTile::GMTile(GMImage2D image, GMRect boundaries)
+{
+    this->image = image;
+    this->boundaries = boundaries;
+}
 
 void GMTile::set_image(std::string path, uint16_t w, uint16_t h)
 {

@@ -3,9 +3,11 @@
 
 #include "sprite.hpp"
 
+#define ANIMATION_MODE_STATIC 0
+
 class GMCpRenderer {
     private:
-        GMSprite* sprites;
+        std::vector<GMSprite*> sprites;
         uint8_t n_sprites;
         uint8_t animation_mode;
         bool _is_visible;
