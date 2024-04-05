@@ -15,8 +15,8 @@ class GMObject {
         uint32_t id;
         GMRect transform;
         std::string last_error;
-        GMCpCollider* collider;
-        GMCpRenderer* renderer;
+        GMCpCollider* collider = nullptr;
+        GMCpRenderer* renderer = nullptr;
         
     public:
         GMObject(){}

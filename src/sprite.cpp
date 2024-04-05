@@ -10,9 +10,17 @@ GMSprite::~GMSprite()
 
 uint8_t GMSprite::add_tile(GMTile* tile)
 {
-    if (this->tiles.size() >= (this->h * this->w) - 1)
-        return SPRITE_NUMBER_OF_TILES_EXCEEDED;
+    if (this->tiles.size() >= (this->h * this->w))
+        throw MaxTilesExceeded();
     
     this->tiles.push_back(tile);
     return 0;
+}
+
+GMTile *GMSprite::get_tile(uint8_t x, uint8_t y)
+{
+    if (x >= w || y >= h)
+        throw TileIndexError();
+    
+    return tiles[x + y*w];
 }

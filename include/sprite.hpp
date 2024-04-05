@@ -16,6 +16,10 @@ class GMSprite {
         GMSprite(uint8_t width, uint8_t height): w(width), h(height){}
         ~GMSprite();
         uint8_t add_tile(GMTile* tile);
+        GMTile* get_tile(uint8_t x, uint8_t y);
+
+        class MaxTilesExceeded{};
+        class TileIndexError{};
 };
 
 #endif
