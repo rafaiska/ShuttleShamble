@@ -9,14 +9,14 @@
 
 class GMSprite {
     private:
-        std::vector<GMTile*> tiles;
+        std::vector<GMTile> tiles;
         uint8_t w;
         uint8_t h;
     public:
         GMSprite(uint8_t width, uint8_t height): w(width), h(height){}
         ~GMSprite();
-        uint8_t add_tile(GMTile* tile);
-        GMTile* get_tile(uint8_t x, uint8_t y);
+        void add_tile(GMTile tile);
+        GMTile get_tile(uint8_t x, uint8_t y);
 
         class MaxTilesExceeded{};
         class TileIndexError{};

@@ -12,6 +12,7 @@ struct GMRect {
     GMRect(uint32_t w, uint32_t h, uint32_t x, uint32_t y);
     GMRect() {GMRect(0, 0, 0, 0);}
     GMRect& operator=(const GMRect& lhr);
+    bool operator==(const GMRect& lhr) const;
 };
 
 struct GMVector {

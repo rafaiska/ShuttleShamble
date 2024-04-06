@@ -31,36 +31,19 @@ class RendererTest : public testing::Test {
 };
 
 TEST_F(RendererTest, test_sprite_tiles) {
-    GMSprite* sprite = new GMSprite(2, 2);
+    GMSprite sprite(2, 2);
     GMImage2D tileset("test.png", 16, 16);
-    GMRect rect(8, 8, 0, 0);
-    GMTile* tile1 = new GMTile(tileset, rect);
-    rect = GMRect(8, 8, 8, 0);
-    GMTile* tile2 = new GMTile(tileset, rect);
-    rect = GMRect(8, 8, 0, 8);
-    GMTile* tile3 = new GMTile(tileset, rect);
-    rect = GMRect(8, 8, 8, 8);
-    GMTile* tile4 = new GMTile(tileset, rect);
-    rect = GMRect(1, 2, 3, 4);
-    GMTile* tile5 = new GMTile(tileset, rect);
 
-    sprite->add_tile(tile1);
-    sprite->add_tile(tile2);
-    sprite->add_tile(tile3);
-    sprite->add_tile(tile4);
-    ASSERT_THROW(sprite->add_tile(tile5), GMSprite::MaxTilesExceeded);
+    sprite.add_tile(GMTile(tileset, GMRect(8, 8, 0, 0)));
+    sprite.add_tile(GMTile(tileset, GMRect(8, 8, 8, 0)));
+    sprite.add_tile(GMTile(tileset, GMRect(8, 8, 0, 8)));
+    sprite.add_tile(GMTile(tileset, GMRect(8, 8, 8, 8)));
+    ASSERT_THROW(sprite.add_tile(GMTile(tileset, GMRect(1, 2, 3, 4))), GMSprite::MaxTilesExceeded);
 
-    ASSERT_EQ(sprite->get_tile(0, 0), tile1);
-    ASSERT_EQ(sprite->get_tile(1, 0), tile2);
-    ASSERT_EQ(sprite->get_tile(0, 1), tile3);
-    ASSERT_EQ(sprite->get_tile(1, 1), tile4);
-    ASSERT_THROW(sprite->get_tile(2, 2), GMSprite::TileIndexError);
-    ASSERT_THROW(sprite->get_tile(-1, -1), GMSprite::TileIndexError);
-
-    delete sprite;
-
-    ASSERT_EQ(tile1, nullptr);
-    ASSERT_EQ(tile2, nullptr);
-    ASSERT_EQ(tile3, nullptr);
-    ASSERT_EQ(tile4, nullptr);
+    ASSERT_EQ(sprite.get_tile(0, 0), GMTile(tileset, GMRect(8, 8, 0, 0)));
+    ASSERT_EQ(sprite.get_tile(1, 0), GMTile(tileset, GMRect(8, 8, 8, 0)));
+    ASSERT_EQ(sprite.get_tile(0, 1), GMTile(tileset, GMRect(8, 8, 0, 8)));
+    ASSERT_EQ(sprite.get_tile(1, 1), GMTile(tileset, GMRect(8, 8, 8, 8)));
+    ASSERT_THROW(sprite.get_tile(2, 2), GMSprite::TileIndexError);
+    ASSERT_THROW(sprite.get_tile(-1, -1), GMSprite::TileIndexError);
 }

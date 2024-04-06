@@ -14,6 +14,8 @@ class GMImage2D {
         GMImage2D(std::string path, uint16_t w, uint16_t h) {this->image_path = path; this->w = w; this->h = h;}
         void set_path(std::string path) {this->image_path = path;}
         void set_dimensions(uint16_t w, uint16_t h) {this->w = w; this->h = h;}
+        bool operator==(const GMImage2D &other) const;
+        GMImage2D& operator=(GMImage2D& other);
 };
 
 #endif

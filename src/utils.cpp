@@ -17,6 +17,12 @@ GMRect& GMRect::operator=(const GMRect& lhr)
     return *this;
 }
 
+bool GMRect::operator==(const GMRect &lhr) const
+{
+    return this->h == lhr.h && this->w == lhr.w &&
+        this->x == lhr.x && this->y == lhr.y;
+}
+
 GMVector& operator*(const float& scalar, GMVector& rhs)
 {
     return rhs * scalar;
