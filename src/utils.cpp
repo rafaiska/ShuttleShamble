@@ -33,7 +33,7 @@ void get_position_from_rect(const GMRect& rect, GMVector &position) {
     position.y = (float) rect.y;
 }
 
-void set_rect_position(GMRect &rect, const GMVector& position) {
+void set_rect_position(GMRect &rect, const GMVector position) {
     rect.x = (uint32_t) position.x;
     rect.y = (uint32_t) position.y;
 }

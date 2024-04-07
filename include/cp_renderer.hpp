@@ -7,17 +7,18 @@
 
 class GMCpRenderer {
     private:
-        std::vector<GMSprite*> sprites;
-        uint8_t n_sprites;
+        std::vector<GMSprite> sprites;
         uint8_t animation_mode;
         bool _is_visible;
 
-        GMSprite* get_current_sprite();
+        GMSprite get_current_sprite();
         GMRect get_rect(uint16_t index, uint8_t w, uint8_t h);
     public:
         GMCpRenderer(){}
         ~GMCpRenderer();
-        bool is_visible(){return _is_visible;}
+        bool is_visible() {return _is_visible;}
+        void add_sprite(GMSprite sprite);
+        GMSprite get_sprite(int index) {return sprites[index];}
 };
 
 #endif

@@ -2,14 +2,16 @@
 
 GMCpRenderer::~GMCpRenderer()
 {
-    for (GMSprite* s : sprites)
-    {
-        delete s;
-    }
     sprites.clear();
 }
 
-GMSprite* GMCpRenderer::get_current_sprite() {
+void GMCpRenderer::add_sprite(GMSprite sprite)
+{
+    GMSprite _sprite = sprite;
+    sprites.push_back(_sprite);
+}
+
+GMSprite GMCpRenderer::get_current_sprite() {
     return sprites[0]; //TODO: This is part of animation logic, TBD
 }
 

@@ -4,6 +4,7 @@
 #include <set>
 
 #include "manager.hpp"
+#include "camera.hpp"
 
 class GMMainLoop {
     private:
@@ -11,6 +12,7 @@ class GMMainLoop {
         std::vector<GMCpCollider*> moving_colliders;
         std::vector<GMObject*> objects;
         std::vector<GMCpRenderer*> renderers;
+        GMCamera camera;
 
         void update_colliders();
         void update_renderers();
@@ -23,6 +25,8 @@ class GMMainLoop {
         void main_loop();
         GMObject* create_object();
         void clear_objects();
+        void configure_camera(GMRect camera_transform) {camera.configure(camera_transform);}
+        GMCamera& get_camera() {return camera;}
 };
 
 #endif
