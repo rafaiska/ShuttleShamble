@@ -19,6 +19,7 @@ class GMCpRenderer {
         bool is_visible() {return _is_visible;}
         void add_sprite(GMSprite sprite);
         GMSprite get_sprite(int index) {return sprites[index];}
+        void update(float delta);
 };
 
 #endif

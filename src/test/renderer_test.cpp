@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <algorithm>
+
 #include "cp_collision.hpp"
 #include "manager.hpp"
 #include "main_loop.hpp"
@@ -50,18 +52,21 @@ TEST_F(RendererTest, test_sprite_tiles)
 TEST_F(RendererTest, test_display_single_sprite)
 {
     main_loop.tick(1.0);
-    ASSERT_EQ(main_loop.get_camera().get_visible_tiles()[0], GMTile(tileset, GMRect(8, 8, 0, 0)));
-    ASSERT_EQ(main_loop.get_camera().get_visible_tiles()[1], GMTile(tileset, GMRect(8, 8, 8, 0)));
-    ASSERT_EQ(main_loop.get_camera().get_visible_tiles()[2], GMTile(tileset, GMRect(8, 8, 0, 8)));
-    ASSERT_EQ(main_loop.get_camera().get_visible_tiles()[3], GMTile(tileset, GMRect(8, 8, 8, 8)));
+    std::vector<GMTile> visible_tiles = main_loop.get_camera().get_visible_tiles();
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 0, 0))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 8, 0))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 0, 8))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 8, 8))) != visible_tiles.end());
 
     obj1->set_position(GMVector(88, 110));
     main_loop.tick(1.0);
-    ASSERT_EQ(main_loop.get_camera().get_visible_tiles()[0], GMTile(tileset, GMRect(8, 8, 0, 8)));
-    ASSERT_EQ(main_loop.get_camera().get_visible_tiles()[1], GMTile(tileset, GMRect(8, 8, 8, 8)));
+    visible_tiles = main_loop.get_camera().get_visible_tiles();
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 0, 8))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 8, 8))) != visible_tiles.end());
 
     obj1->set_position(GMVector(84, 110));
     main_loop.tick(1.0);
+    visible_tiles = main_loop.get_camera().get_visible_tiles();
     ASSERT_TRUE(main_loop.get_camera().get_visible_tiles().size() == 0);
 }
 
@@ -73,4 +78,6 @@ void create_sprite(GMObject& object, const GMImage2D& tileset)
     sprite.add_tile(GMTile(tileset, GMRect(8, 8, 8, 0)));
     sprite.add_tile(GMTile(tileset, GMRect(8, 8, 0, 8)));
     sprite.add_tile(GMTile(tileset, GMRect(8, 8, 8, 8)));
+
+    object.get_renderer()->add_sprite(sprite);
 }

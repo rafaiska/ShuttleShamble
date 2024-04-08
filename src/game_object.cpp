@@ -2,7 +2,10 @@
 
 void GMObject::update(float delta)
 {
-    collider->update(delta);
+    if(collider != nullptr)
+        collider->update(delta);
+    if(renderer != nullptr)
+        renderer->update(delta);
 }
 
 GMObject::~GMObject()
