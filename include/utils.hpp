@@ -41,5 +41,6 @@ void set_rect_position(GMRect &rect, const GMVector position);
 GMCircle get_aura(const GMRect& r);
 float distance_between(const GMVector& vectorA, const GMVector& vectorB);
 GMVector center_of_mass(const GMRect& rect);
+GMRect rect_intersection(const GMRect& rect_a, const GMRect& rect_b);
 
 #endif

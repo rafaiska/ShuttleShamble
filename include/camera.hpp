@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "utils.hpp"
-#include "tile.hpp"
+#include "cp_renderer.hpp"
 
 class GMCamera {
     public:
@@ -13,6 +13,7 @@ class GMCamera {
         void configure(GMRect rect) {this->transform = rect;}
         void set_position(GMVector position) {set_rect_position(this->transform, position);}
         std::vector<GMTile> get_visible_tiles() {return visible_tiles;}
+        bool is_renderer_visible(GMCpRenderer& renderer) const;
 
     private:
         GMRect transform;

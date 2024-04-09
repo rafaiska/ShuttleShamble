@@ -81,6 +81,11 @@ GMVector center_of_mass(const GMRect& rect)
     return ret;
 }
 
+GMRect rect_intersection(const GMRect &rect_a, const GMRect &rect_b)
+{
+    return GMRect();
+}
+
 GMCircle::GMCircle(float x, float y, float r)
 {
     position.x = x;
