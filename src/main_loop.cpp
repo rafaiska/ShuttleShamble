@@ -25,7 +25,7 @@ void GMMainLoop::enqueue_collider(GMCpCollider* collider)
 
 void GMMainLoop::enqueue_renderer(GMCpRenderer *renderer)
 {
-    if (renderer != nullptr && camera.is_renderer_visible(*renderer)) {
+    if (renderer != nullptr && renderer->is_visible()) {
         renderers.push_back(renderer);
     }
 }
@@ -61,9 +61,13 @@ void GMMainLoop::update_renderers()
 {
     for (GMCpRenderer* r : renderers)
     {
-        for (GMTile t: r->get_sprite().get_tiles())
-            GMManager::get_instance()->get_video_service()->draw_tile(t, camera.get_position());
+        for (GMTile t: r->get_current_sprite().get_tiles())
+        {
+            if(camera.is_tile_visible(t))
+                GMManager::get_instance()->get_video_service()->draw_tile(t, camera.get_position());
+        }
     }
+    renderers.clear();
 }
 
 void GMMainLoop::track_colliders(GMCpCollider* colliderA, GMCpCollider* colliderB, std::set<GMCpCollider*>& collider_set) {

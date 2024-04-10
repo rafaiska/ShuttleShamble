@@ -13,6 +13,7 @@ struct GMRect {
     GMRect() {GMRect(0, 0, 0, 0);}
     GMRect& operator=(const GMRect& lhr);
     bool operator==(const GMRect& lhr) const;
+    bool operator!=(const GMRect& lhr) {return !(*this == lhr);}
 };
 
 struct GMVector {

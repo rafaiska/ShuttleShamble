@@ -17,6 +17,7 @@ class GMSprite {
         ~GMSprite();
         void add_tile(GMTile tile);
         GMTile get_tile(uint8_t x, uint8_t y);
+        std::vector<GMTile> get_tiles() {return tiles;}
 
         class MaxTilesExceeded{};
         class TileIndexError{};

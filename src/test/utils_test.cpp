@@ -79,3 +79,12 @@ TEST_F(UtilsTest, test_center_of_mass)
     ASSERT_EQ(com.x, 14);
     ASSERT_EQ(com.y, 9);
 }
+
+TEST_F(UtilsTest, test_rect_intersection)
+{
+    GMRect rectB(10, 5, 8, 8);
+    ASSERT_EQ(rect_intersection(rectA, rectB), GMRect(10, 5, 8, 8));
+
+    rectB = GMRect(20, 5, 8, 8);
+    ASSERT_EQ(rect_intersection(rectA, rectB), GMRect(0, 0, 0, 0));
+}
