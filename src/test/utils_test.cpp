@@ -80,6 +80,18 @@ TEST_F(UtilsTest, test_center_of_mass)
     ASSERT_EQ(com.y, 9);
 }
 
+TEST_F(UtilsTest, test_rect_given_points)
+{
+    GMVector vectorB(15, 8);
+    ASSERT_EQ(rect_given_points(vectorA, vectorB), GMRect(4, 1, 11, 7));
+
+    vectorB = GMVector(9, 6);
+    ASSERT_EQ(rect_given_points(vectorA, vectorB), GMRect(2, 1, 9, 6));
+
+    vectorB = GMVector(11, 7);
+    ASSERT_EQ(rect_given_points(vectorA, vectorB), GMRect(11, 7, 0, 0));
+}
+
 TEST_F(UtilsTest, test_rect_intersection)
 {
     GMRect rectB(10, 5, 8, 8);

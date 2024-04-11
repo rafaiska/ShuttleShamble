@@ -43,5 +43,8 @@ GMCircle get_aura(const GMRect& r);
 float distance_between(const GMVector& vectorA, const GMVector& vectorB);
 GMVector center_of_mass(const GMRect& rect);
 GMRect rect_intersection(const GMRect& rect_a, const GMRect& rect_b);
+template<typename T> T max(T a, T b){ return(a > b ? a : b); }
+template<typename T> T min(T a, T b){ return(a <= b ? a : b); }
+GMRect rect_given_points(GMVector& a, GMVector& b);
 
 #endif
