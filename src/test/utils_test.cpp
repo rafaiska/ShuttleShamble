@@ -94,9 +94,11 @@ TEST_F(UtilsTest, test_rect_given_points)
 
 TEST_F(UtilsTest, test_rect_intersection)
 {
-    GMRect rectB(10, 5, 8, 8);
-    ASSERT_EQ(rect_intersection(rectA, rectB), GMRect(10, 5, 8, 8));
+    GMRect rectB(8, 8, 10, 5);
+    GMRect intersection = rect_intersection(rectA, rectB);
+    ASSERT_EQ(intersection, GMRect(8, 8, 10, 5));
 
-    rectB = GMRect(20, 5, 8, 8);
-    ASSERT_EQ(rect_intersection(rectA, rectB), GMRect(0, 0, 0, 0));
+    rectB = GMRect(8, 8, 20, 5);
+    intersection = rect_intersection(rectA, rectB);
+    ASSERT_EQ(intersection, GMRect(0, 0, 0, 0));
 }

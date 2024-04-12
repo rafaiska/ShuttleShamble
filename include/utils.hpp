@@ -9,8 +9,7 @@ struct GMRect {
     uint32_t h;
     uint32_t x;
     uint32_t y;
-    GMRect(uint32_t w, uint32_t h, uint32_t x, uint32_t y);
-    GMRect() {GMRect(0, 0, 0, 0);}
+    GMRect(uint32_t w=0, uint32_t h=0, uint32_t x=0, uint32_t y=0);
     GMRect& operator=(const GMRect& lhr);
     bool operator==(const GMRect& lhr) const;
     bool operator!=(const GMRect& lhr) {return !(*this == lhr);}
@@ -19,8 +18,7 @@ struct GMRect {
 struct GMVector {
     float x;
     float y;
-    GMVector(float x, float y) {this->x = x;this->y = y;}
-    GMVector() {GMVector(0.0, 0.0);}
+    GMVector(float x=0, float y=0) {this->x = x;this->y = y;}
     GMVector& operator+(const GMVector& rhs);
     GMVector& operator*(float scalar);
     GMVector& operator=(const GMVector& rhs);
@@ -32,8 +30,7 @@ struct GMCircle
 {
     GMVector position;
     float radius;
-    GMCircle(float x, float y, float r);
-    GMCircle(){GMCircle(0, 0, 0);}
+    GMCircle(float x=0, float y=0, float r=0);
     GMCircle& operator=(const GMCircle& other);
 };
 

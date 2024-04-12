@@ -38,7 +38,7 @@ class RendererTest : public testing::Test {
 
 TEST_F(RendererTest, test_sprite_tiles)
 {
-    GMSprite sprite = obj1->get_renderer()->get_sprite(0);
+    GMSprite sprite = obj1->get_renderer()->get_current_sprite();
     ASSERT_THROW(sprite.add_tile(GMTile(tileset, GMRect(1, 2, 3, 4))), GMSprite::MaxTilesExceeded);
 
     ASSERT_EQ(sprite.get_tile(0, 0), GMTile(tileset, GMRect(8, 8, 0, 0)));

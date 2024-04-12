@@ -84,21 +84,17 @@ GMVector center_of_mass(const GMRect& rect)
 GMRect rect_intersection(const GMRect &rect_a, const GMRect &rect_b)
 {
     int x1 = rect_a.x;
-    int y1 = rect_a.x;
+    int y1 = rect_a.y;
     int x2 = rect_a.x + rect_a.w;
     int y2 = rect_a.y + rect_a.h;
     int x3 = rect_b.x;
     int y3 = rect_b.y;
     int x4 = rect_b.x + rect_b.w;
     int y4 = rect_b.y + rect_b.h;
-    // gives bottom-left point
-    // of intersection rectangle
 
     GMVector bottom_left = GMVector(max(x1, x3), max(y1, y3));
     GMVector top_right = GMVector(min(x2, x4), min(y2, y4));
 
- 
-    // no intersection
     if (bottom_left.x > top_right.x || bottom_left.y > top_right.y) {
         return GMRect();
     }
