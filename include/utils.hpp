@@ -34,7 +34,7 @@ struct GMCircle
     GMCircle& operator=(const GMCircle& other);
 };
 
-void get_position_from_rect(const GMRect& rect, GMVector &position);
+GMVector get_position_from_rect(const GMRect& rect);
 void set_rect_position(GMRect &rect, const GMVector position);
 GMCircle get_aura(const GMRect& r);
 float distance_between(const GMVector& vectorA, const GMVector& vectorB);

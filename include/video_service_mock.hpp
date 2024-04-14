@@ -7,9 +7,9 @@
 #include "video_service.hpp"
 
 struct GMDisplayedTile {
-    const GMTile* tile;
+    GMTile tile;
     GMVector position;
-    GMDisplayedTile(const GMTile* tile, const GMVector position) {this->tile = tile; this->position = position;}
+    GMDisplayedTile(const GMTile tile_, const GMVector position_): tile(tile_), position(position_) {}
 };
 
 class VideoServiceMock: public VideoService {
@@ -19,9 +19,10 @@ class VideoServiceMock: public VideoService {
     public:
         void init(){}
         void exit(){}
-        bool draw_tile(const GMTile& tile, const GMVector& position);
+        bool draw_tile(const GMTile& tile, const GMVector& tile_position, const GMVector& camera_position);
         bool clear_canvas();
         uint8_t get_status(){return 0;}
+        std::vector<GMDisplayedTile> get_displayed_tiles() {return displayed_tiles;}
 };
 
 #endif

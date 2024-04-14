@@ -59,13 +59,22 @@ void GMMainLoop::update_colliders()
 
 void GMMainLoop::update_renderers()
 {
-    for (GMCpRenderer* r : renderers)
+    GMVector camera_position = get_position_from_rect(camera.get_transform());
+    for (GMCpRenderer* renderer : renderers)
     {
-        for (GMTile t: r->get_current_sprite().get_tiles())
-        {
-            if(camera.is_tile_visible(t))
-                GMManager::get_instance()->get_video_service()->draw_tile(t, camera.get_position());
-        }
+        uint8_t tile_size = renderer->get_current_sprite().get_tile_size();
+        GMVector sprite_position = get_position_from_rect(renderer->get_transform());
+        for (uint8_t r=0; r < renderer->get_current_sprite().get_rows(); ++r)
+            for (uint8_t c=0; c < renderer->get_current_sprite().get_columns(); ++c)
+            {
+                GMTile tile = renderer->get_current_sprite().get_tile(c, r);
+                if(camera.is_tile_visible(tile))
+                {
+                    GMVector tile_position = get_position_from_rect(renderer->get_transform());
+                    tile_position = tile_position + GMVector(c * tile_size, r * tile_size);
+                    GMManager::get_instance()->get_video_service()->draw_tile(tile, tile_position, camera_position);
+                }
+            }
     }
     renderers.clear();
 }

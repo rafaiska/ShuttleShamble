@@ -28,9 +28,9 @@ GMVector& operator*(const float& scalar, GMVector& rhs)
     return rhs * scalar;
 }
 
-void get_position_from_rect(const GMRect& rect, GMVector &position) {
-    position.x = (float) rect.x;
-    position.y = (float) rect.y;
+GMVector get_position_from_rect(const GMRect& rect)
+{
+    return GMVector((float) rect.x, (float) rect.y);
 }
 
 void set_rect_position(GMRect &rect, const GMVector position) {

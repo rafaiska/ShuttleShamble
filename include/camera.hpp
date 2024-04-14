@@ -12,14 +12,11 @@ class GMCamera {
         GMCamera(GMRect rect) {this->transform = rect;}
         void configure(GMRect rect) {this->transform = rect;}
         void set_position(GMVector position) {set_rect_position(this->transform, position);}
-        std::vector<GMTile> get_visible_tiles() {return visible_tiles;}
         bool is_tile_visible(GMTile& tile) const;
-        GMVector get_position() const {return position;}
+        GMRect get_transform() const {return transform;}
 
     private:
-        GMVector position;
         GMRect transform;
-        std::vector<GMTile> visible_tiles;
 };
 
 #endif

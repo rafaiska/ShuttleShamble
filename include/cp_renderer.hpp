@@ -13,7 +13,6 @@ class GMCpRenderer {
         GMRect transform;
 
         GMSprite get_sprite(int index) {return sprites[index];}
-        GMRect get_rect(uint16_t index, uint8_t w, uint8_t h);
     public:
         GMCpRenderer(){}
         ~GMCpRenderer();

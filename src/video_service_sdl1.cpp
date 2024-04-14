@@ -10,7 +10,7 @@ void VideoServiceSDL1::exit() {
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-bool VideoServiceSDL1::draw_tile(const GMTile& tile, const GMVector& position) {
+bool VideoServiceSDL1::draw_tile(const GMTile& tile, const GMVector& tile_position, const GMVector& camera_position) {
     // SDL_Surface* img_surface = IMG_Load(image.image_path.c_str());
     // if (img_surface == NULL) {
     //     std::cout << "COULDN'T LOAD IMAGE FILE: " + image.image_path;

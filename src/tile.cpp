@@ -1,11 +1,13 @@
 #include "tile.hpp"
 
-GMTile::GMTile(GMImage2D image, GMRect boundaries)
+GMTile::GMTile(GMImage2D image_, GMRect boundaries_)
 {
-    GMImage2D _image = image;
-    GMRect _boundaries = boundaries;
-    this->image = _image;
-    this->boundaries = _boundaries;
+    this->image = image_;
+    this->boundaries = boundaries_;
+
+    if (this->boundaries.h != this->boundaries.w)
+        throw TilesShouldBeSquare();
+    this->size = this->boundaries.w;
 }
 
 void GMTile::set_image(std::string path, uint16_t w, uint16_t h)

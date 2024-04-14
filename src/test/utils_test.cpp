@@ -51,7 +51,7 @@ TEST_F(UtilsTest, test_rect_operators)
 
 TEST_F(UtilsTest, test_get_position_from_rect)
 {
-    get_position_from_rect(rectA, vectorA);
+    vectorA = get_position_from_rect(rectA);
 
     ASSERT_EQ(vectorA.x, 10);
     ASSERT_EQ(vectorA.y, 5);
@@ -89,7 +89,7 @@ TEST_F(UtilsTest, test_rect_given_points)
     ASSERT_EQ(rect_given_points(vectorA, vectorB), GMRect(2, 1, 9, 6));
 
     vectorB = GMVector(11, 7);
-    ASSERT_EQ(rect_given_points(vectorA, vectorB), GMRect(11, 7, 0, 0));
+    ASSERT_EQ(rect_given_points(vectorA, vectorB), GMRect(0, 0, 11, 7));
 }
 
 TEST_F(UtilsTest, test_rect_intersection)
