@@ -13,10 +13,22 @@ class RendererTest : public testing::Test {
         GMManager* manager;
         GMMainLoop main_loop;
         GMObject* obj1;
-        GMImage2D tileset = GMImage2D("test.png", 16, 16);
         VideoServiceMock* video_service;
 
-        RendererTest(){}
+        GMImage2D tileset = GMImage2D("test.png", 16, 16);
+        GMTile tile00 = GMTile(tileset, GMRect(8, 8, 0, 0));
+        GMTile tile01 = GMTile(tileset, GMRect(8, 8, 8, 0));
+        GMTile tile10 = GMTile(tileset, GMRect(8, 8, 0, 8));
+        GMTile tile11 = GMTile(tileset, GMRect(8, 8, 8, 8));
+        GMSprite sprite = GMSprite(2, 2, 8);
+
+        RendererTest()
+        {
+            sprite.add_tile(tile00);
+            sprite.add_tile(tile01);
+            sprite.add_tile(tile10);
+            sprite.add_tile(tile11);
+        }
 
         void SetUp() override {
             manager = GMManager::get_instance();
@@ -31,7 +43,8 @@ class RendererTest : public testing::Test {
             obj1->set_position(GMVector(110, 110));
             obj1->set_dimensions(GMVector(16, 16));
             obj1->create_renderer();
-            create_sprite(*obj1, tileset);
+
+            obj1->get_renderer()->add_sprite(sprite);
         }
 
         void TearDown() override {
@@ -42,7 +55,7 @@ class RendererTest : public testing::Test {
 TEST_F(RendererTest, test_sprite_tiles)
 {
     GMSprite sprite = obj1->get_renderer()->get_current_sprite();
-    ASSERT_THROW(sprite.add_tile(GMTile(tileset, GMRect(1, 2, 3, 4))), GMSprite::MaxTilesExceeded);
+    ASSERT_THROW(sprite.add_tile(GMTile(tileset, GMRect(8, 8, 9, 10))), GMSprite::MaxTilesExceeded);
 
     ASSERT_EQ(sprite.get_tile(0, 0), GMTile(tileset, GMRect(8, 8, 0, 0)));
     ASSERT_EQ(sprite.get_tile(1, 0), GMTile(tileset, GMRect(8, 8, 8, 0)));
@@ -71,16 +84,4 @@ TEST_F(RendererTest, test_display_single_sprite)
     main_loop.tick(1.0);
     visible_tiles = video_service->get_displayed_tiles();
     ASSERT_TRUE(visible_tiles.size() == 0);
-}
-
-void create_sprite(GMObject& object, const GMImage2D& tileset)
-{
-    GMSprite sprite(2, 2, 8);
-
-    sprite.add_tile(GMTile(tileset, GMRect(8, 8, 0, 0)));
-    sprite.add_tile(GMTile(tileset, GMRect(8, 8, 8, 0)));
-    sprite.add_tile(GMTile(tileset, GMRect(8, 8, 0, 8)));
-    sprite.add_tile(GMTile(tileset, GMRect(8, 8, 8, 8)));
-
-    object.get_renderer()->add_sprite(sprite);
 }

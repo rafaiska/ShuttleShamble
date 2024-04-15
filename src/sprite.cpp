@@ -13,8 +13,7 @@ void GMSprite::add_tile(GMTile tile)
     if (tile.get_size() != this->tile_size)
         throw WrongTileSize();
     
-    GMTile new_tile = tile;
-    this->tiles.push_back(new_tile);
+    this->tiles.push_back(tile);
 }
 
 GMTile GMSprite::get_tile(uint8_t column, uint8_t row)

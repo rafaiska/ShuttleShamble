@@ -10,8 +10,7 @@ class GMImage2D {
     uint16_t h;
 
     public:
-        GMImage2D() {GMImage2D("", 0, 0);}
-        GMImage2D(std::string path, uint16_t w, uint16_t h) {this->image_path = path; this->w = w; this->h = h;}
+        GMImage2D(std::string path_="", uint16_t w_=0, uint16_t h_=0): image_path(path_), w(w_), h(h_) {}
         void set_path(std::string path) {this->image_path = path;}
         void set_dimensions(uint16_t w, uint16_t h) {this->w = w; this->h = h;}
         bool operator==(const GMImage2D &other) const;
