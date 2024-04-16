@@ -2,11 +2,8 @@
 
 #include <algorithm>
 
-#include "cp_collision.hpp"
 #include "manager.hpp"
 #include "main_loop.hpp"
-
-void create_sprite(GMObject& object, const GMImage2D& tileset);
 
 class RendererTest : public testing::Test {
     protected:
@@ -45,6 +42,7 @@ class RendererTest : public testing::Test {
             obj1->create_renderer();
 
             obj1->get_renderer()->add_sprite(sprite);
+            obj1->get_renderer()->toggle_visible(true);
         }
 
         void TearDown() override {
@@ -69,16 +67,17 @@ TEST_F(RendererTest, test_display_single_sprite)
 {
     main_loop.tick(1.0);
     std::vector<GMDisplayedTile> visible_tiles = video_service->get_displayed_tiles();
-    // ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 0, 0))) != visible_tiles.end());
-    // ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 8, 0))) != visible_tiles.end());
-    // ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 0, 8))) != visible_tiles.end());
-    // ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 8, 8))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile00, GMVector(10, 10))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile01, GMVector(18, 10))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile10, GMVector(10, 18))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile11, GMVector(18, 18))) != visible_tiles.end());
+
 
     obj1->set_position(GMVector(88, 110));
     main_loop.tick(1.0);
     visible_tiles = video_service->get_displayed_tiles();
-    // ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 0, 8))) != visible_tiles.end());
-    // ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMTile(tileset, GMRect(8, 8, 8, 8))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile01, GMVector(8, 8))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile11, GMVector(8, 16))) != visible_tiles.end());
 
     obj1->set_position(GMVector(84, 110));
     main_loop.tick(1.0);

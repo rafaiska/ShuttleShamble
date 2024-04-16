@@ -21,6 +21,7 @@ class GMCpRenderer {
         GMSprite get_current_sprite();
         void update(float delta);
         GMRect& get_transform() {return transform;}
+        void toggle_visible(bool toggle) { _is_visible = toggle;}
 };
 
 #endif

@@ -10,6 +10,7 @@ struct GMDisplayedTile {
     GMTile tile;
     GMVector position;
     GMDisplayedTile(const GMTile tile_, const GMVector position_): tile(tile_), position(position_) {}
+    bool operator==(const GMDisplayedTile& other) {return(tile == other.tile && position == other.position);}
 };
 
 class VideoServiceMock: public VideoService {
