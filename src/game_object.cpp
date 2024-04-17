@@ -47,3 +47,15 @@ void GMObject::create_renderer()
 {
     renderer = new GMCpRenderer();
 }
+
+GMRect GMObject::get_renderer_global_rect()
+{
+    if (renderer == nullptr)
+        throw NoRendererPresent();
+    
+    GMRect renderer_global = renderer->get_transform();
+    renderer_global.x = renderer_global.x + transform.x;
+    renderer_global.y = renderer_global.y + transform.y;
+
+    return renderer_global;
+}

@@ -23,10 +23,10 @@ void GMMainLoop::enqueue_collider(GMCpCollider* collider)
     }
 }
 
-void GMMainLoop::enqueue_renderer(GMCpRenderer *renderer)
+void GMMainLoop::enqueue_renderer(GMObject* object)
 {
-    if (renderer != nullptr && renderer->is_visible()) {
-        renderers.push_back(renderer);
+    if (object->get_renderer() != nullptr && object->get_renderer()->is_visible()) {
+        renderer_queue.push_back(object);
     }
 }
 
@@ -60,23 +60,27 @@ void GMMainLoop::update_colliders()
 void GMMainLoop::update_renderers()
 {
     GMVector camera_position = get_position_from_rect(camera.get_transform());
-    for (GMCpRenderer* renderer : renderers)
+    while (renderer_queue.size() > 0)
     {
-        uint8_t tile_size = renderer->get_current_sprite().get_tile_size();
-        GMVector sprite_position = get_position_from_rect(renderer->get_transform());
-        for (uint8_t r=0; r < renderer->get_current_sprite().get_rows(); ++r)
-            for (uint8_t c=0; c < renderer->get_current_sprite().get_columns(); ++c)
+        GMObject* rendered_object = renderer_queue.back();
+        renderer_queue.pop_back();
+        
+        uint8_t tile_size = rendered_object->get_renderer()->get_current_sprite().get_tile_size();
+        GMVector renderer_global_pos = get_position_from_rect(rendered_object->get_renderer_global_rect());
+        GMSprite sprite = rendered_object->get_renderer()->get_current_sprite();
+
+        for (uint8_t r=0; r < sprite.get_rows(); ++r)
+            for (uint8_t c=0; c < sprite.get_columns(); ++c)
             {
-                GMTile tile = renderer->get_current_sprite().get_tile(c, r);
-                if(camera.is_tile_visible(tile))
+                GMTile tile = sprite.get_tile(c, r);
+                if(camera.is_tile_visible(tile, renderer_global_pos))
                 {
-                    GMVector tile_position = get_position_from_rect(renderer->get_transform());
+                    GMVector tile_position = renderer_global_pos;
                     tile_position = tile_position + GMVector(c * tile_size, r * tile_size);
                     GMManager::get_instance()->get_video_service()->draw_tile(tile, tile_position, camera_position);
                 }
             }
     }
-    renderers.clear();
 }
 
 void GMMainLoop::track_colliders(GMCpCollider* colliderA, GMCpCollider* colliderB, std::set<GMCpCollider*>& collider_set) {
@@ -92,7 +96,7 @@ void GMMainLoop::tick(float delta)
     for (GMObject *object : objects) {
         object->update(delta);
         enqueue_collider(object->get_collider());
-        enqueue_renderer(object->get_renderer());
+        enqueue_renderer(object);
     }
     update_colliders();
     update_renderers();

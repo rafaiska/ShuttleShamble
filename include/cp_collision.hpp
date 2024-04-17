@@ -15,6 +15,7 @@ class GMCpCollider {
                 uint8_t elasticity;
                 std::string collider_tag;
                 GMCpCollider* collided_with_other;
+                GMRect transform;
         public:
                 GMCpCollider(const GMVector& position, float aura_radius);
                 void update(float delta);

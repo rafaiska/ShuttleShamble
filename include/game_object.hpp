@@ -31,6 +31,10 @@ class GMObject {
         GMCpCollider* get_collider() {return collider;}
         void create_renderer();
         GMCpRenderer* get_renderer() {return renderer;}
+        GMRect get_renderer_global_rect();
+        GMRect get_collider_global_rect_after_movement();
+
+        class NoRendererPresent{};
 };
 
 #endif

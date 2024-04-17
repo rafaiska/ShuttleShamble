@@ -11,7 +11,7 @@ class GMMainLoop {
         std::vector<GMCpCollider*> stopped_colliders;
         std::vector<GMCpCollider*> moving_colliders;
         std::vector<GMObject*> objects;
-        std::vector<GMCpRenderer*> renderers;
+        std::vector<GMObject*> renderer_queue;
         GMCamera camera;
 
         void update_colliders();
@@ -20,7 +20,7 @@ class GMMainLoop {
 
     public:
         void enqueue_collider(GMCpCollider* collider);
-        void enqueue_renderer(GMCpRenderer* renderer);
+        void enqueue_renderer(GMObject* object);
         void tick(float delta);
         void main_loop();
         GMObject* create_object();
