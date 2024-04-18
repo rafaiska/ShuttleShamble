@@ -83,10 +83,10 @@ void GMMainLoop::update_renderers()
 }
 
 void GMMainLoop::track_colliders(GMCpCollider* colliderA, GMCpCollider* colliderB, std::set<GMCpCollider*>& collider_set) {
-    colliderA->set_collided_with(colliderB);
+    colliderA->get_collided_with_others().push_back(colliderB);
     collider_set.insert(colliderA);
 
-    colliderB->set_collided_with(colliderA);
+    colliderB->get_collided_with_others().push_back(colliderA);
     collider_set.insert(colliderB);
 }
 

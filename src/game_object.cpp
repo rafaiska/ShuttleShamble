@@ -33,19 +33,20 @@ void GMObject::set_dimensions(GMVector dimensions) {
     transform.h = (uint32_t) dimensions.y;
 }
 
-void GMObject::create_collider()
+void GMObject::create_collider(GMVector offset)
 {
-    GMVector position = center_of_mass(this->transform);
-    float bigger_edge_size = transform.w > transform.h ? transform.w : transform.h;
-    float smaller_edge_size = transform.w < transform.h ? transform.w : transform.h;
-    float inscribed_circle = smaller_edge_size / 2.0;
-    float circumscribed_circle = sqrt(bigger_edge_size*bigger_edge_size + smaller_edge_size*smaller_edge_size) / 2.0;
-    collider = new GMCpCollider(position, (inscribed_circle + circumscribed_circle) / 2.0);
+    GMRect collider_transform = transform;
+    collider_transform.x = (uint32_t) offset.x;
+    collider_transform.y = (uint32_t) offset.y;
+    collider = new GMCpCollider(collider_transform);
 }
 
-void GMObject::create_renderer()
+void GMObject::create_renderer(GMVector offset)
 {
-    renderer = new GMCpRenderer();
+    GMRect renderer_transform = transform;
+    renderer_transform.x = (uint32_t) offset.x;
+    renderer_transform.y = (uint32_t) offset.y;
+    renderer = new GMCpRenderer(renderer_transform);
 }
 
 GMRect GMObject::get_renderer_global_rect()

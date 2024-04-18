@@ -39,7 +39,7 @@ class RendererTest : public testing::Test {
             obj1 = main_loop.create_object();
             obj1->set_position(GMVector(110, 110));
             obj1->set_dimensions(GMVector(16, 16));
-            obj1->create_renderer();
+            obj1->create_renderer(GMVector());
 
             obj1->get_renderer()->add_sprite(sprite);
             obj1->get_renderer()->toggle_visible(true);
@@ -78,11 +78,11 @@ TEST_F(RendererTest, test_display_single_sprite)
     main_loop.tick(1.0);
     visible_tiles = video_service->get_displayed_tiles();
     ASSERT_EQ(visible_tiles.size(), 2);
-    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile01, GMVector(96, 88))) != visible_tiles.end());
-    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile11, GMVector(96, 96))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile01, GMVector(96, 110))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile11, GMVector(96, 118))) != visible_tiles.end());
     video_service->clear_displayed_tiles();
 
-    obj1->set_position(GMVector(84, 110));
+    obj1->set_position(GMVector(83, 110));
     main_loop.tick(1.0);
     visible_tiles = video_service->get_displayed_tiles();
     ASSERT_EQ(visible_tiles.size(), 0);

@@ -27,9 +27,9 @@ class GMObject {
         std::string get_last_error() {return last_error;}
         void clear_error() {last_error.clear();}
         bool error_detected() {return !last_error.empty();}
-        void create_collider();
+        void create_collider(GMVector offset);
         GMCpCollider* get_collider() {return collider;}
-        void create_renderer();
+        void create_renderer(GMVector offset);
         GMCpRenderer* get_renderer() {return renderer;}
         GMRect get_renderer_global_rect();
         GMRect get_collider_global_rect_after_movement();
