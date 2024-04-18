@@ -23,9 +23,9 @@ bool GMRect::operator==(const GMRect &lhr) const
         this->x == lhr.x && this->y == lhr.y;
 }
 
-GMVector& operator*(const float& scalar, GMVector& rhs)
+GMVector operator*(const float& scalar, const GMVector& rhs)
 {
-    return rhs * scalar;
+    return GMVector(rhs.x * scalar, rhs.y*scalar);
 }
 
 GMVector get_position_from_rect(const GMRect& rect)
@@ -48,17 +48,14 @@ GMCircle get_aura(const GMRect &r)
     return GMCircle(center.x, center.y, (inscribed_circle_radius + circumscribed_circle_radius) / 2.0);
 }
 
-GMVector& GMVector::operator+(const GMVector& rhs)
+GMVector GMVector::operator+(const GMVector& rhs) const
 {
-    x += rhs.x;
-    y += rhs.y;
-    return *this;
+    return GMVector(x + rhs.x, y + rhs.y);
 }
 
-GMVector& GMVector::operator*(float scalar) {
-    x *= scalar;
-    y *= scalar;
-    return *this;
+GMVector GMVector::operator*(float scalar) const
+{
+    return GMVector(x * scalar, y * scalar);
 }
 
 GMVector &GMVector::operator=(const GMVector& rhs)

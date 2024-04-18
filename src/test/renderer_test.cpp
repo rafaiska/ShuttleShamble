@@ -67,20 +67,23 @@ TEST_F(RendererTest, test_display_single_sprite)
 {
     main_loop.tick(1.0);
     std::vector<GMDisplayedTile> visible_tiles = video_service->get_displayed_tiles();
-    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile00, GMVector(10, 10))) != visible_tiles.end());
-    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile01, GMVector(18, 10))) != visible_tiles.end());
-    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile10, GMVector(10, 18))) != visible_tiles.end());
-    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile11, GMVector(18, 18))) != visible_tiles.end());
-
+    ASSERT_EQ(visible_tiles.size(), 4);
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile00, GMVector(110, 110))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile01, GMVector(118, 110))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile10, GMVector(110, 118))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile11, GMVector(118, 118))) != visible_tiles.end());
+    video_service->clear_displayed_tiles();
 
     obj1->set_position(GMVector(88, 110));
     main_loop.tick(1.0);
     visible_tiles = video_service->get_displayed_tiles();
-    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile01, GMVector(8, 8))) != visible_tiles.end());
-    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile11, GMVector(8, 16))) != visible_tiles.end());
+    ASSERT_EQ(visible_tiles.size(), 2);
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile01, GMVector(96, 88))) != visible_tiles.end());
+    ASSERT_TRUE(std::find(visible_tiles.begin(), visible_tiles.end(), GMDisplayedTile(tile11, GMVector(96, 96))) != visible_tiles.end());
+    video_service->clear_displayed_tiles();
 
     obj1->set_position(GMVector(84, 110));
     main_loop.tick(1.0);
     visible_tiles = video_service->get_displayed_tiles();
-    ASSERT_TRUE(visible_tiles.size() == 0);
+    ASSERT_EQ(visible_tiles.size(), 0);
 }

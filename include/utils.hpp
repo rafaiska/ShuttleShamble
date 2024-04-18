@@ -19,12 +19,12 @@ struct GMVector {
     float x;
     float y;
     GMVector(float x=0, float y=0) {this->x = x;this->y = y;}
-    GMVector& operator+(const GMVector& rhs);
-    GMVector& operator*(float scalar);
+    GMVector operator+(const GMVector& rhs) const;
+    GMVector operator*(float scalar) const;
     GMVector& operator=(const GMVector& rhs);
     bool operator==(const GMVector& other) {return this->x == other.x && this->y == other.y;}
 };
-GMVector& operator*(const float& scalar, GMVector& rhs);
+GMVector operator*(const float& scalar, const GMVector& rhs);
 
 struct GMCircle
 {

@@ -24,6 +24,7 @@ class VideoServiceMock: public VideoService {
         bool clear_canvas();
         uint8_t get_status(){return 0;}
         std::vector<GMDisplayedTile> get_displayed_tiles() {return displayed_tiles;}
+        void clear_displayed_tiles() {displayed_tiles.clear();}
 };
 
 #endif

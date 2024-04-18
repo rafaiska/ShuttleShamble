@@ -73,11 +73,10 @@ void GMMainLoop::update_renderers()
             for (uint8_t c=0; c < sprite.get_columns(); ++c)
             {
                 GMTile tile = sprite.get_tile(c, r);
-                if(camera.is_tile_visible(tile, renderer_global_pos))
+                GMVector tile_global_position = renderer_global_pos + GMVector(c * tile_size, r * tile_size);
+                if(camera.is_tile_visible(tile, tile_global_position))
                 {
-                    GMVector tile_position = renderer_global_pos;
-                    tile_position = tile_position + GMVector(c * tile_size, r * tile_size);
-                    GMManager::get_instance()->get_video_service()->draw_tile(tile, tile_position, camera_position);
+                    GMManager::get_instance()->get_video_service()->draw_tile(tile, tile_global_position, camera_position);
                 }
             }
     }
