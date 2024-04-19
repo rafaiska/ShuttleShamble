@@ -2,24 +2,26 @@
 
 GMObject* GMMainLoop::create_object() {
     GMObject* new_obj = new GMObject();
-    objects.push_back(new_obj);
+    all_objects.push_back(new_obj);
     return new_obj;
 }
 
 void GMMainLoop::clear_objects() {
-    for (GMObject* obj: objects) {
+    for (GMObject* obj: all_objects) {
         delete obj;
     }
-    objects.clear();
+    all_objects.clear();
 }
 
-void GMMainLoop::enqueue_collider(GMCpCollider* collider)
+void GMMainLoop::enqueue_collider(GMObject* object)
 {
+    GMCpCollider* collider = object->get_collider();
     if (collider != nullptr) {
+        collider->clear_collided_with();
         if (collider->moved())
-            moving_colliders.push_back(collider);
+            moving_objects.push_back(object);
         else
-            stopped_colliders.push_back(collider);
+            stopped_objects.push_back(object);
     }
 }
 
@@ -32,29 +34,34 @@ void GMMainLoop::enqueue_renderer(GMObject* object)
 
 void GMMainLoop::update_colliders()
 {
-    std::set<GMCpCollider*> collided;
+    std::set<GMObject*> collided;
 
-    for (int i=0; i < moving_colliders.size(); i++) {
-        if (!moving_colliders[i]->moved())
-            continue;
-        
-        for (int j=i+1; j < moving_colliders.size(); j++) {
-            if (moving_colliders[i]->collided_with(*moving_colliders[j])) 
-            {
-                track_colliders(moving_colliders[i], moving_colliders[j], collided);
-            }
+    for (int i=0; i < moving_objects.size(); i++) {      
+        for (int j=i+1; j < moving_objects.size(); j++) {
+            track_collision(moving_objects[i], moving_objects[j], collided);
         }
 
-        for (GMCpCollider* stopped_collider: stopped_colliders) {
-            if (moving_colliders[i]->collided_with(*stopped_collider)) 
-            {
-                track_colliders(moving_colliders[i], stopped_collider, collided);
-            }
+        for (GMObject* stopped_object: stopped_objects) {
+            track_collision(moving_objects[i], stopped_object, collided);
         }
     }
 
-    moving_colliders.clear();
-    stopped_colliders.clear();
+    for (GMObject* object : moving_objects)
+    {
+        if (!collided.count(object))
+        {
+            object->get_collider()->commit_position();
+            object->set_position(object->get_collider()->get_position());;
+        }
+    }
+
+    for (auto object: collided)
+    {
+        //TODO: handle collision
+    }
+
+    moving_objects.clear();
+    stopped_objects.clear();
 }
 
 void GMMainLoop::update_renderers()
@@ -82,19 +89,22 @@ void GMMainLoop::update_renderers()
     }
 }
 
-void GMMainLoop::track_colliders(GMCpCollider* colliderA, GMCpCollider* colliderB, std::set<GMCpCollider*>& collider_set) {
-    colliderA->get_collided_with_others().push_back(colliderB);
-    collider_set.insert(colliderA);
+void GMMainLoop::track_collision(GMObject* objectA, GMObject* objectB, std::set<GMObject*>& all_collided) {
+    if(objectA->get_collider()->collided_with(*(objectB->get_collider())))
+    {
+        objectA->get_collider()->get_collided_with_others().push_back(objectB->get_collider());
+        all_collided.insert(objectA);
 
-    colliderB->get_collided_with_others().push_back(colliderA);
-    collider_set.insert(colliderB);
+        objectB->get_collider()->get_collided_with_others().push_back(objectA->get_collider());
+        all_collided.insert(objectB);
+    }
 }
 
 void GMMainLoop::tick(float delta)
 {
-    for (GMObject *object : objects) {
+    for (GMObject *object : all_objects) {
         object->update(delta);
-        enqueue_collider(object->get_collider());
+        enqueue_collider(object);
         enqueue_renderer(object);
     }
     update_colliders();

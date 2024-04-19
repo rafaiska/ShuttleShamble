@@ -8,18 +8,18 @@
 
 class GMMainLoop {
     private:
-        std::vector<GMCpCollider*> stopped_colliders;
-        std::vector<GMCpCollider*> moving_colliders;
-        std::vector<GMObject*> objects;
+        std::vector<GMObject*> stopped_objects;
+        std::vector<GMObject*> moving_objects;
+        std::vector<GMObject*> all_objects;
         std::vector<GMObject*> renderer_queue;
         GMCamera camera;
 
         void update_colliders();
         void update_renderers();
-        void track_colliders(GMCpCollider* colliderA, GMCpCollider* colliderB, std::set<GMCpCollider*>& collider_set);
+        void track_collision(GMObject* objectA, GMObject* objectB, std::set<GMObject*>& all_collided);
 
     public:
-        void enqueue_collider(GMCpCollider* collider);
+        void enqueue_collider(GMObject* collider);
         void enqueue_renderer(GMObject* object);
         void tick(float delta);
         void main_loop();

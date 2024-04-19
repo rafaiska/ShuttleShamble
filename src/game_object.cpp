@@ -38,7 +38,7 @@ void GMObject::create_collider(GMVector offset)
     GMRect collider_transform = transform;
     collider_transform.x = (uint32_t) offset.x;
     collider_transform.y = (uint32_t) offset.y;
-    collider = new GMCpCollider(collider_transform);
+    collider = new GMCpCollider(collider_transform, get_position_from_rect(transform));
 }
 
 void GMObject::create_renderer(GMVector offset)

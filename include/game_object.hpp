@@ -32,7 +32,7 @@ class GMObject {
         void create_renderer(GMVector offset);
         GMCpRenderer* get_renderer() {return renderer;}
         GMRect get_renderer_global_rect();
-        GMRect get_collider_global_rect_after_movement();
+        GMRect get_collider_global_rect();
 
         class NoRendererPresent{};
 };

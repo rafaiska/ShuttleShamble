@@ -1,9 +1,9 @@
 #include "cp_collision.hpp"
 
-GMCpCollider::GMCpCollider(GMRect transform)
+GMCpCollider::GMCpCollider(GMRect transform, GMVector global_position)
 {
     this->transform = transform;
-    this->position = get_position_from_rect(transform);
+    this->position = global_position;
     this->new_position = position;
     this->speed = GMVector(0, 0);
 }
@@ -22,7 +22,13 @@ void GMCpCollider::set_speed(GMVector new_speed) {
 }
 
 bool GMCpCollider::collided_with(const GMCpCollider& other) {
-    return rect_intersection(transform, other.transform) != GMRect();
+    GMRect this_global_rect = GMRect(transform.w, transform.h,
+        new_position.x + transform.x, new_position.y + transform.y);
+    GMRect other_transform = other.get_transform();
+    GMVector other_new_position = other.get_new_position();
+    GMRect other_global_rect = GMRect(other_transform.w, other_transform.h,
+        other_new_position.x + other_transform.x, other_new_position.y + other_transform.y);
+    return rect_intersection(this_global_rect, other_global_rect) != GMRect();
 }
 
 void GMCpCollider::add_collided_with(GMCpCollider* other)
