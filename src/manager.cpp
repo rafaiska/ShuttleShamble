@@ -17,6 +17,7 @@ GMManager* GMManager::get_instance() {
 
 void GMManager::start_test_services() {
     video_service = new VideoServiceMock();
+    file_service = new FileService();
 }
 
 void GMManager::log_error(GMObject* object, std::string message)
