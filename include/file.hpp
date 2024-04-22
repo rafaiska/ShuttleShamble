@@ -1,8 +1,7 @@
 #ifndef _FILE_HPP_
 #define _FILE_HPP_
 
-#include <iostream>
-#include <fstream>
+#include <cstdio>
 #include <string>
 #include <sstream>
 
@@ -18,8 +17,7 @@ enum GMFileMode
 
 class GMFile
 {
-    std::ifstream gmf_ifstream;
-    std::ofstream gmf_ofstream;
+    FILE* file_pointer=nullptr;
     std::string path;
     GMFileType type;
     GMFileMode mode;
@@ -28,8 +26,11 @@ class GMFile
     public:
         GMFile(){}
         GMFile(std::string path_, GMFileType type_, GMFileMode mode_): path(path_), type(type_), mode(mode_){}
+        ~GMFile(){if (file_pointer != nullptr) close();}
         void open();
+        void close();
         std::string read_line();
+        void write_line(std::string line);
         uint8_t read_byte();
         uint16_t read_word();
         uint32_t read_dword();

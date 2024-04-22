@@ -15,7 +15,6 @@ class FileService
 
     public:
         FileService();
-        ~FileService();
         std::string get_working_dir() {return WORKING_DIR;}
         std::string get_home_dir() {return HOME_DIR;}
         GMFile& get_file(std::string file_path) {return opened_files[file_path];}

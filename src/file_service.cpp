@@ -23,3 +23,9 @@ GMFile &FileService::open_file(std::string file_path, GMFileType type, GMFileMod
     }
     return opened_files[file_path];
 }
+
+void FileService::close_file(std::string file_path)
+{
+    if (opened_files.count(file_path))
+        opened_files.erase(file_path);
+}
