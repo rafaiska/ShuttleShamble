@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <string>
 #include <sstream>
+#include <cstdint>
 
 enum GMFileType
 {
