@@ -3,10 +3,19 @@
 
 #include <string>
 
+#include "file_service.hpp"
+
 class AssetManager
 {
+    private:
+        FileService* file_service;
+        AssetsFile* assets_file;
     public:
-        static void create_asset_file(std::string dir_path, std::string output_path);
+        AssetManager(FileService* file_service_): file_service(file_service_){}
+        ~AssetManager();
+        AssetsFile* create_assets_file(std::string dir_path, std::string output_path);
+        AssetsFile* load_assets_file(std::string file_path);
+        AssetsFile* get_assets_file() {return assets_file;}
 };
 
 enum AssetType
@@ -16,7 +25,10 @@ enum AssetType
 
 class AssetsFile
 {
+    GMFile file_handler;
 
+    public:
+        AssetsFile(std::string file_path);
 };
 
 struct AssetFileIndexEntry
