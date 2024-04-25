@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<map id="1">
+   <object id="1912">
+      <name>Passoca</name>
+      <type>Enemy</type>
+      <hp>12</hp>
+      <maxhp>20</maxhp>
+    </object>
+</map>
