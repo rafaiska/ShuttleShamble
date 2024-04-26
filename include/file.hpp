@@ -29,6 +29,7 @@ class GMFile
         GMFile(std::string path_, GMFileType type_, GMFileMode mode_): path(path_), type(type_), mode(mode_){}
         ~GMFile(){if (file_pointer != nullptr) close();}
         void open();
+        void open(std::string path_, GMFileType type_, GMFileMode mode_);
         void close();
         std::string read_line();
         void write_line(std::string line);

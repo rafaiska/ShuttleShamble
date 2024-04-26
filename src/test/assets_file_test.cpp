@@ -19,7 +19,7 @@ class AssetsFileTest : public testing::Test {
 
         void TearDown() override
         {
-            asset_manager->close_assets_file();
+            manager->shutdown_asset_manager();
         }
 };
 

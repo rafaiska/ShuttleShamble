@@ -17,10 +17,30 @@ GMManager* GMManager::get_instance() {
 
 void GMManager::start_test_services() {
     video_service = new VideoServiceMock();
-    file_service = new FileService();
+    start_file_service();
 }
 
 void GMManager::log_error(GMObject* object, std::string message)
 {
     std::cout << message;
+}
+
+FileService *GMManager::start_file_service()
+{
+    file_service = new FileService();
+    return file_service;
+}
+
+AssetManager *GMManager::start_asset_manager()
+{
+    if (file_service == nullptr)
+        throw FileServiceMustBeInitialized();
+    asset_manager = new AssetManager(file_service);
+    return asset_manager;
+}
+
+void GMManager::shutdown_asset_manager()
+{
+    if (asset_manager != nullptr)
+        delete asset_manager;
 }

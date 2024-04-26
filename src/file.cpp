@@ -12,6 +12,14 @@ void GMFile::open()
         error_msg = "Error loading file";
 }
 
+void GMFile::open(std::string path_, GMFileType type_, GMFileMode mode_)
+{
+    this->path = path_;
+    this->type = type_;
+    this->mode = mode_;
+    open();
+}
+
 void GMFile::close()
 {
     if (file_pointer != nullptr)
