@@ -62,3 +62,8 @@ GMFile& GMFile::operator=(const GMFile &other)
     this->type = other.type;
     return *this;
 }
+
+void GMFile::write_byte(uint8_t byte)
+{
+    putc(byte, file_pointer);
+}

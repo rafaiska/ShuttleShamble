@@ -5,6 +5,8 @@
 
 #include "file_service.hpp"
 
+#define MAX_INDEX_ENTRIES 2000
+
 enum AssetType
 {
     XML, PNG, MOD, OTHER
@@ -33,6 +35,7 @@ class AssetsFile
         AssetsFile(std::string file_path, bool is_read_mode=true, bool is_data_compressed_=false);
         ~AssetsFile();
         size_t get_size() {return file_size;}
+        void create_index();
 };
 
 class AssetManager
