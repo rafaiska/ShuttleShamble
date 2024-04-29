@@ -36,6 +36,7 @@ class AssetsFile
         ~AssetsFile();
         size_t get_size() {return file_size;}
         void create_index();
+        void insert_asset(std::string asset_path);
 };
 
 class AssetManager

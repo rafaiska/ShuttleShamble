@@ -10,6 +10,10 @@ AssetsFile *AssetManager::create_assets_file(std::string dir_path, std::string o
 {
     assets_file = new AssetsFile(output_path, false);
     assets_file->create_index();
+    for (std::string file_path : file_service->get_file_paths_from_dir(dir_path))
+    {
+        assets_file->insert_asset(file_path);
+    }
     return assets_file;
 }
 
@@ -34,4 +38,9 @@ void AssetsFile::create_index()
             file_handler.write_byte(0);
         }
     }
+}
+
+void AssetsFile::insert_asset(std::string asset_path)
+{
+    
 }

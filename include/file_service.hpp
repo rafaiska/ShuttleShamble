@@ -1,8 +1,9 @@
 #ifndef _FILE_SERVICE_HPP_
 #define _FILE_SERVICE_HPP_
 
-#include<unordered_map>
-#include<filesystem>
+#include <unordered_map>
+#include <vector>
+#include <filesystem>
 
 #include "file.hpp"
 
@@ -21,6 +22,7 @@ class FileService
         GMFile& open_file(std::string file_path, GMFileType type, GMFileMode mode);
         void close_file(std::string file_path);
         uint32_t n_files_opened() {return opened_files.size();}
+        std::vector<std::string> get_file_paths_from_dir(std::string dir_path);
 
         class ErrorOpeningFile{};
 };

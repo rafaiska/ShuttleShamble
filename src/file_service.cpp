@@ -29,3 +29,15 @@ void FileService::close_file(std::string file_path)
     if (opened_files.count(file_path))
         opened_files.erase(file_path);
 }
+
+std::vector<std::string> FileService::get_file_paths_from_dir(std::string dir_path)
+{
+    std::vector<std::string> ret;
+
+    for (auto file: std::filesystem::recursive_directory_iterator(dir_path))
+    {
+        ret.push_back(file.path());
+    }
+
+    return ret;
+}
