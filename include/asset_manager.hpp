@@ -2,10 +2,14 @@
 #define _ASSET_MANAGER_HPP_
 
 #include <string>
+#include <xxhash.h>
 
 #include "file_service.hpp"
 
 #define MAX_INDEX_ENTRIES 2000
+#define ASSET_PATH_MAX_SIZE 40
+
+uint32_t get_index_from_path(std::string path);
 
 enum AssetType
 {
@@ -14,13 +18,13 @@ enum AssetType
 
 struct AssetFileIndexEntry
 {
-    char path[40];
+    char path[ASSET_PATH_MAX_SIZE];
     uint32_t address;
 };
 
 struct AssetFileRegistry
 {
-    char path[40];
+    char path[ASSET_PATH_MAX_SIZE];
     uint32_t end_address;
     AssetType type;
 };
@@ -37,6 +41,8 @@ class AssetsFile
         size_t get_size() {return file_size;}
         void create_index();
         void insert_asset(std::string asset_path);
+
+        class AssetPathMaxSizeExceeded{};
 };
 
 class AssetManager

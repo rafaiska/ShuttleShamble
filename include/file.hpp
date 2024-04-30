@@ -38,8 +38,8 @@ class GMFile
         uint32_t read_dword();
         void write_byte(uint8_t byte);
         void write_word(uint16_t word);
-        void write_dword(uint16_t dword);
-        void seek();
+        void write_dword(uint32_t dword);
+        void seek(uint32_t pos);
         std::string get_error_msg() {return error_msg;}
         bool error() {return error_msg.size() > 0;}
         void clear_error() {error_msg.clear();}
