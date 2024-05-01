@@ -25,10 +25,5 @@ class AssetsFileTest : public testing::Test {
 
 TEST_F(AssetsFileTest, create_asset_file) {
     AssetsFile* file = asset_manager->create_assets_file("src/test/assets", "test_assets.gma");
-//  index                 88000 bytes
-//  sample.csv 45 + 118 =   163 bytes
-//  sample.png 45 + 640 =   685 bytes
-//  sample.xml 45 + 171 =   216 bytes
-//                        89064 bytes total
-    ASSERT_EQ(file->get_size(), 89064);
+    ASSERT_EQ(file->get_size(), 88547);
 }

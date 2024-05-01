@@ -36,7 +36,6 @@ void AssetsFile::create_index()
         for (size_t i = 0; i < index_entry_size; ++i)
         {
             file_handler.write_byte(0);
-            file_size += 1;
         }
     }
 }
@@ -46,7 +45,11 @@ void AssetsFile::insert_asset(std::string asset_path)
     if (asset_path.size() > ASSET_PATH_MAX_SIZE)
         throw AssetPathMaxSizeExceeded();
     
+    file_handler.seek_end();
+    uint32_t asset_position = file_handler.get_cursor_position();
     int counter = 0;
+
+    // TODO: Make new function GMFile::write_padded_string(char padding_character)
     for (char c : asset_path)
     {
         file_handler.write_byte(c);
@@ -70,13 +73,32 @@ void AssetsFile::insert_asset(std::string asset_path)
 
     // CREATE INDEX ENTRY. TODO: MAKE INTO SEPARATE FUNCTION
     uint32_t index = get_index_from_path(asset_path);
+    file_handler.seek(index * sizeof(AssetFileIndexEntry));
+    counter = 0;
+    for (char c : asset_path)
+    {
+        file_handler.write_byte(c);
+        counter += 1;
+    }
+    for (int i = counter; i < ASSET_PATH_MAX_SIZE; ++i)
+        file_handler.write_byte(0);
+    file_handler.write_dword(asset_position);
 }
 
 uint32_t get_index_from_path(std::string path)
 {
-    XXH32_state_t* state = XXH32_createState();
-    XXH32_update(state, path.c_str(), path.size());
-    XXH32_hash_t hash = XXH32_digest(state);
-    XXH32_freeState(state);
+    uint8_t buffer[ASSET_PATH_MAX_SIZE];
+    uint8_t size = 0;
+    for (int i = 0; i<path.size(); ++i)
+    {
+        buffer[i] = path[i];
+        size += 1;
+    }
+    XXH64_state_t* state = XXH64_createState();
+    if (state == NULL)
+        throw 1;
+    XXH64_update(state, buffer, size);
+    XXH64_hash_t hash = XXH64_digest(state);
+    XXH64_freeState(state);
     return ((uint32_t) hash) % MAX_INDEX_ENTRIES;
 }

@@ -34,8 +34,7 @@ std::string GMFile::read_line()
     if (mode == GMFileMode::WRITE)
         throw WrongFileMode();
     
-    if (file_pointer == nullptr)
-        throw FileNotOpened();
+    check_if_file_opened();
     
     std::ostringstream stream;
     char c = getc(file_pointer);
@@ -49,10 +48,17 @@ std::string GMFile::read_line()
 
 void GMFile::write_line(std::string line)
 {
-    if (file_pointer == nullptr)
-        throw FileNotOpened();
+    check_if_file_opened();
     
     fprintf(file_pointer, "%s\n", line.c_str());
+}
+
+uint8_t GMFile::read_byte()
+{
+    char c = fgetc(file_pointer);
+    if (c == EOF)
+        throw ReachedEndOfFile();
+    return (uint8_t) c;
 }
 
 GMFile& GMFile::operator=(const GMFile &other)
@@ -63,7 +69,68 @@ GMFile& GMFile::operator=(const GMFile &other)
     return *this;
 }
 
+uint32_t GMFile::get_cursor_position()
+{
+    check_if_file_opened();
+
+    return ftell(file_pointer);
+}
+
+size_t GMFile::get_size()
+{
+    uint32_t current_position = get_cursor_position();
+    fseek(file_pointer, 0, SEEK_END);
+    size_t size = get_cursor_position();
+    fseek(file_pointer, current_position, SEEK_SET);
+    return size;
+}
+
+void GMFile::write_bytes_from_file(GMFile &other_file)
+{
+    check_if_file_opened();
+    other_file.check_if_file_opened();
+
+    uint8_t r_byte = 64;
+    while(1)
+    {
+        try
+        {
+            r_byte = other_file.read_byte();
+        }
+        catch(ReachedEndOfFile e)
+        {
+            break;
+        }
+        write_byte(r_byte);
+    }
+}
+
 void GMFile::write_byte(uint8_t byte)
 {
     putc(byte, file_pointer);
+}
+
+void GMFile::write_dword(uint32_t dword)
+{
+    for (int i = 3; i >= 0; --i)
+    {
+        write_byte((dword >> 8 * i) % 256);
+    }
+}
+
+void GMFile::seek(uint32_t pos)
+{
+    check_if_file_opened();
+    fseek(file_pointer, pos, SEEK_SET);
+}
+
+void GMFile::seek_end()
+{
+    fseek(file_pointer, 0, SEEK_END);
+}
+
+void GMFile::check_if_file_opened()
+{
+    if (file_pointer == nullptr)
+        throw FileNotOpened();
 }

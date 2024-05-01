@@ -33,12 +33,11 @@ class AssetsFile
 {
     GMFile file_handler;
     bool is_data_compressed;
-    size_t file_size;
 
     public:
         AssetsFile(std::string file_path, bool is_read_mode=true, bool is_data_compressed_=false);
         ~AssetsFile();
-        size_t get_size() {return file_size;}
+        size_t get_size() {return file_handler.get_size();}
         void create_index();
         void insert_asset(std::string asset_path);
 
