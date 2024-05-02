@@ -17,6 +17,11 @@ AssetsFile *AssetManager::create_assets_file(std::string dir_path, std::string o
     return assets_file;
 }
 
+AssetsFile *AssetManager::load_assets_file(std::string file_path)
+{
+    return nullptr;
+}
+
 AssetsFile::AssetsFile(std::string file_path, bool is_read_mode, bool is_data_compressed_)
 {
     GMFileMode mode = is_read_mode ? GMFileMode::READ : GMFileMode::WRITE;
@@ -26,6 +31,17 @@ AssetsFile::AssetsFile(std::string file_path, bool is_read_mode, bool is_data_co
 AssetsFile::~AssetsFile()
 {
     file_handler.close();
+    clear_cache();
+}
+
+void AssetsFile::clear_cache()
+{
+    for (auto file_cache_entry: cached_file_data)
+    {
+        if (file_cache_entry.second != nullptr)
+            delete file_cache_entry.second;
+    }
+    cached_file_data.clear();
 }
 
 void AssetsFile::create_index()
@@ -87,18 +103,18 @@ void AssetsFile::insert_asset(std::string asset_path)
 
 uint32_t get_index_from_path(std::string path)
 {
-    uint8_t buffer[ASSET_PATH_MAX_SIZE];
-    uint8_t size = 0;
-    for (int i = 0; i<path.size(); ++i)
-    {
-        buffer[i] = path[i];
-        size += 1;
-    }
     XXH64_state_t* state = XXH64_createState();
     if (state == NULL)
         throw 1;
-    XXH64_update(state, buffer, size);
+    XXH64_reset(state, 0);
+    XXH64_update(state, path.c_str(), path.size());
     XXH64_hash_t hash = XXH64_digest(state);
     XXH64_freeState(state);
     return ((uint32_t) hash) % MAX_INDEX_ENTRIES;
+}
+
+GMFileCache::~GMFileCache()
+{
+    if (bytes != nullptr)
+        delete bytes;
 }

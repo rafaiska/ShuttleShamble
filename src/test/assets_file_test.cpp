@@ -23,7 +23,20 @@ class AssetsFileTest : public testing::Test {
         }
 };
 
-TEST_F(AssetsFileTest, create_asset_file) {
+TEST_F(AssetsFileTest, test_get_index_from_path)
+{
+    ASSERT_EQ(get_index_from_path("src/test/assets/sample.csv"), 1037);
+    ASSERT_EQ(get_index_from_path("src/test/assets/sample.png"), 311);
+    ASSERT_EQ(get_index_from_path("src/test/assets/sample.xml"), 439);
+}
+
+TEST_F(AssetsFileTest, create_and_load_assets_file)
+{
     AssetsFile* file = asset_manager->create_assets_file("src/test/assets", "test_assets.gma");
     ASSERT_EQ(file->get_size(), 88547);
+    delete file;
+
+    file = asset_manager->load_assets_file("test_assets.gma");
+    ASSERT_EQ(file->get_size(), 88547);
+    delete file;
 }

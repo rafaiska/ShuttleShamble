@@ -11,6 +11,17 @@
 
 uint32_t get_index_from_path(std::string path);
 
+class GMFileCache
+{
+    std::string path;
+    uint8_t* bytes=nullptr;
+    uint32_t size;
+
+    public:
+        GMFileCache(std::string path_, uint8_t* buffer, uint32_t size_);
+        ~GMFileCache();
+};
+
 enum AssetType
 {
     XML, PNG, MOD, OTHER
@@ -33,6 +44,7 @@ class AssetsFile
 {
     GMFile file_handler;
     bool is_data_compressed;
+    std::unordered_map<std::string, GMFileCache*> cached_file_data;
 
     public:
         AssetsFile(std::string file_path, bool is_read_mode=true, bool is_data_compressed_=false);
@@ -40,6 +52,7 @@ class AssetsFile
         size_t get_size() {return file_handler.get_size();}
         void create_index();
         void insert_asset(std::string asset_path);
+        void clear_cache();
 
         class AssetPathMaxSizeExceeded{};
 };
