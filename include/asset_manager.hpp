@@ -46,6 +46,8 @@ class AssetsFile
     bool is_data_compressed;
     std::unordered_map<std::string, GMFileCache*> cached_file_data;
 
+    bool check_if_index_position_is_filled(uint32_t index_pos);
+
     public:
         AssetsFile(std::string file_path, bool is_read_mode=true, bool is_data_compressed_=false);
         ~AssetsFile();
@@ -53,8 +55,10 @@ class AssetsFile
         void create_index();
         void insert_asset(std::string asset_path);
         void clear_cache();
+        void create_and_insert_index_entry(std::string asset_path, uint32_t asset_position);
 
         class AssetPathMaxSizeExceeded{};
+        class AssetsFileIndexIsFull{};
 };
 
 class AssetManager
@@ -68,6 +72,7 @@ class AssetManager
         AssetsFile* create_assets_file(std::string dir_path, std::string output_path);
         AssetsFile* load_assets_file(std::string file_path);
         AssetsFile* get_assets_file() {return assets_file;}
+        void close_assets_file();
 };
 
 #endif

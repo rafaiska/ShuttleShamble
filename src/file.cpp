@@ -105,6 +105,22 @@ void GMFile::write_bytes_from_file(GMFile &other_file)
     }
 }
 
+void GMFile::write_padded_string(std::string str, char padding_character, int padded_size)
+{
+    if (padded_size < str.size())
+        throw 1; // TODO: Create Exception
+        
+    int counter = 0;
+    for (char c : str)
+    {
+        write_byte(c);
+        counter += 1;
+    }
+
+    for (int i = counter; i < padded_size; ++i)
+        write_byte(padding_character);
+}
+
 void GMFile::write_byte(uint8_t byte)
 {
     putc(byte, file_pointer);

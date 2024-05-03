@@ -34,9 +34,9 @@ TEST_F(AssetsFileTest, create_and_load_assets_file)
 {
     AssetsFile* file = asset_manager->create_assets_file("src/test/assets", "test_assets.gma");
     ASSERT_EQ(file->get_size(), 88547);
-    delete file;
+    asset_manager->close_assets_file();
 
     file = asset_manager->load_assets_file("test_assets.gma");
     ASSERT_EQ(file->get_size(), 88547);
-    delete file;
+    asset_manager->close_assets_file();
 }

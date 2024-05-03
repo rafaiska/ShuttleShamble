@@ -50,6 +50,7 @@ class GMFile
         uint32_t get_cursor_position();
         size_t get_size();
         void write_bytes_from_file(GMFile& other_file);
+        void write_padded_string(std::string str, char padding_character, int padded_size);
 
         class WrongFileMode {};
         class FileNotOpened {};
