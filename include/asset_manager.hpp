@@ -33,46 +33,39 @@ struct AssetFileIndexEntry
     uint32_t address;
 };
 
-struct AssetFileRegistry
+struct AssetFileRegistryHeader
 {
     char path[ASSET_PATH_MAX_SIZE];
     uint32_t end_address;
     AssetType type;
 };
 
-class AssetsFile
+class AssetManager
 {
-    GMFile file_handler;
-    bool is_data_compressed;
-    std::unordered_map<std::string, GMFileCache*> cached_file_data;
+    private:
+        FileService* file_service;
+        GMFile file_handler;
+        bool is_data_compressed;
+        std::unordered_map<std::string, GMFileCache*> cached_file_data;
 
-    bool check_if_index_position_is_filled(uint32_t index_pos);
+        bool check_if_index_position_is_filled(uint32_t index_pos);
 
     public:
-        AssetsFile(std::string file_path, bool is_read_mode=true, bool is_data_compressed_=false);
-        ~AssetsFile();
+        AssetManager(FileService* file_service_): file_service(file_service_){}
+        ~AssetManager();
+        void create_assets_file(std::string dir_path, std::string output_path);
+        void load_assets_file(std::string file_path);
+        void close_assets_file();
         size_t get_size() {return file_handler.get_size();}
         void create_index();
         void insert_asset(std::string asset_path);
         void clear_cache();
         void create_and_insert_index_entry(std::string asset_path, uint32_t asset_position);
+        bool is_creation_mode();
+        void init_file(std::string file_path, bool is_read_mode, bool is_data_compressed_);
 
         class AssetPathMaxSizeExceeded{};
         class AssetsFileIndexIsFull{};
-};
-
-class AssetManager
-{
-    private:
-        FileService* file_service;
-        AssetsFile* assets_file = nullptr;
-    public:
-        AssetManager(FileService* file_service_): file_service(file_service_){}
-        ~AssetManager();
-        AssetsFile* create_assets_file(std::string dir_path, std::string output_path);
-        AssetsFile* load_assets_file(std::string file_path);
-        AssetsFile* get_assets_file() {return assets_file;}
-        void close_assets_file();
 };
 
 #endif

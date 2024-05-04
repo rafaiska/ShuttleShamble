@@ -52,3 +52,16 @@ TEST_F(FileTest, get_file_paths_from_dir_test)
     ASSERT_TRUE(std::find(paths.begin(), paths.end(), "src/test/assets/sample.png") != paths.end());
     ASSERT_TRUE(std::find(paths.begin(), paths.end(), "src/test/assets/sample.xml") != paths.end());
 }
+
+TEST_F(FileTest, seek_and_write_then_reload_and_read)
+{
+    GMFile file = service->open_file("test.gma", GMFileType::BINARY, GMFileMode::WRITE);
+    for (int i = 0; i<100; ++i)
+        file.write_byte(0);
+    file.seek(50);
+    file.write_padded_string("PASSOCA", 0, 10);
+    service->close_file("test");
+    file = service->open_file("test", GMFileType::BINARY, GMFileMode::READ);
+    file.seek(50);
+    ASSERT_EQ(file.read_byte(), 'P');
+}

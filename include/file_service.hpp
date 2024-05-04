@@ -18,13 +18,15 @@ class FileService
         FileService();
         std::string get_working_dir() {return WORKING_DIR;}
         std::string get_home_dir() {return HOME_DIR;}
-        GMFile& get_file(std::string file_path) {return opened_files[file_path];}
+        GMFile& get_file(std::string file_path);
         GMFile& open_file(std::string file_path, GMFileType type, GMFileMode mode);
         void close_file(std::string file_path);
         uint32_t n_files_opened() {return opened_files.size();}
         std::vector<std::string> get_file_paths_from_dir(std::string dir_path);
 
         class ErrorOpeningFile{};
+        class FileNotOpened{};
+        class FileAlreadyOpened{};
 };
 
 #endif

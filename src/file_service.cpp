@@ -12,8 +12,18 @@ FileService::FileService()
     HOME_DIR = home_dir_str.str();
 }
 
+GMFile &FileService::get_file(std::string file_path)
+{
+    if (opened_files.count(file_path) == 0)
+        throw FileNotOpened();
+    return opened_files[file_path];
+}
+
 GMFile &FileService::open_file(std::string file_path, GMFileType type, GMFileMode mode)
 {
+    if (opened_files.count(file_path) != 0)
+        throw FileAlreadyOpened();
+    
     opened_files[file_path] = GMFile(file_path, type, mode);
     opened_files[file_path].open();
     if (opened_files[file_path].error())
