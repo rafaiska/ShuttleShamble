@@ -18,7 +18,7 @@ enum GMFileMode
 
 class GMFile
 {
-    FILE* file_pointer=nullptr;
+    FILE* file_pointer = nullptr;
     std::string path;
     GMFileType type;
     GMFileMode mode;
@@ -29,7 +29,6 @@ class GMFile
     public:
         GMFile(){}
         GMFile(std::string path_, GMFileType type_, GMFileMode mode_): path(path_), type(type_), mode(mode_){}
-        ~GMFile(){if (file_pointer != nullptr) close();}
         void open();
         void open(std::string path_, GMFileType type_, GMFileMode mode_);
         void close();
@@ -51,6 +50,8 @@ class GMFile
         size_t get_size();
         void write_bytes_from_file(GMFile& other_file);
         void write_padded_string(std::string str, char padding_character, int padded_size);
+        GMFileMode get_mode() {return mode;}
+        bool is_open() {return (file_pointer != nullptr);}
 
         class WrongFileMode {};
         class FileNotOpened {};

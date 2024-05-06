@@ -31,6 +31,8 @@ struct AssetFileIndexEntry
 {
     char path[ASSET_PATH_MAX_SIZE];
     uint32_t address;
+
+    AssetFileIndexEntry();
 };
 
 struct AssetFileRegistryHeader
@@ -47,9 +49,11 @@ class AssetManager
         GMFile file_handler;
         bool is_data_compressed;
         std::unordered_map<std::string, GMFileCache*> cached_file_data;
+        std::string asset_file_path;
 
         bool check_if_index_position_is_filled(uint32_t index_pos);
-
+        void create_index_entry(std::string asset_path, uint32_t asset_position, AssetFileIndexEntry* entries);
+        void write_index(uint32_t position, AssetFileIndexEntry& entry);
     public:
         AssetManager(FileService* file_service_): file_service(file_service_){}
         ~AssetManager();
@@ -57,12 +61,11 @@ class AssetManager
         void load_assets_file(std::string file_path);
         void close_assets_file();
         size_t get_size() {return file_handler.get_size();}
-        void create_index();
-        void insert_asset(std::string asset_path);
+        void create_index_space();
+        uint32_t insert_asset(std::string asset_path);
         void clear_cache();
-        void create_and_insert_index_entry(std::string asset_path, uint32_t asset_position);
+        uint32_t get_assets_file_size();
         bool is_creation_mode();
-        void init_file(std::string file_path, bool is_read_mode, bool is_data_compressed_);
 
         class AssetPathMaxSizeExceeded{};
         class AssetsFileIndexIsFull{};

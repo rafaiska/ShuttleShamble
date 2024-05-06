@@ -1,24 +1,31 @@
 #include "asset_manager.hpp"
 
-AssetManager::~AssetManager()
+void AssetManager::create_assets_file(std::string dir_path, std::string output_path)
 {
-    close_assets_file();
-}
-
-AssetsFile *AssetManager::create_assets_file(std::string dir_path, std::string output_path)
-{
-    assets_file = new AssetsFile(output_path, false);
-    assets_file->create_index();
+    file_handler = file_service->open_file(output_path, GMFileType::BINARY, GMFileMode::WRITE);
+    asset_file_path = output_path;
+    create_index_space();
+    AssetFileIndexEntry entries[MAX_INDEX_ENTRIES];
     for (std::string file_path : file_service->get_file_paths_from_dir(dir_path))
     {
-        assets_file->insert_asset(file_path);
+        uint32_t asset_position = insert_asset(file_path);
+        create_index_entry(file_path, asset_position, entries);
     }
-    return assets_file;
+    for (int position = 0; position < MAX_INDEX_ENTRIES; ++position)
+    {
+        if(entries[position].address != 0)
+            write_index(position, entries[position]);
+    }
+}
+
+void AssetManager::load_assets_file(std::string file_path)
+{
+    file_handler = file_service->open_file(file_path, GMFileType::BINARY, GMFileMode::READ);
 }
 
 void AssetManager::close_assets_file()
 {
-    file_service->close_file(file_handler.get_path());
+    file_service->close_file(asset_file_path);
 }
 
 bool AssetManager::check_if_index_position_is_filled(uint32_t index_pos)
@@ -27,10 +34,9 @@ bool AssetManager::check_if_index_position_is_filled(uint32_t index_pos)
     return (file_handler.read_byte() != 0);
 }
 
-void AssetManager::init_file(std::string file_path, bool is_read_mode, bool is_data_compressed_)
+bool AssetManager::is_creation_mode()
 {
-    GMFileMode mode = is_read_mode ? GMFileMode::READ : GMFileMode::WRITE;
-    file_handler.open(file_path, GMFileType::BINARY, mode);
+    return (file_handler.is_open() && file_handler.get_mode() != GMFileMode::READ);
 }
 
 AssetManager::~AssetManager()
@@ -41,15 +47,16 @@ AssetManager::~AssetManager()
 
 void AssetManager::clear_cache()
 {
-    for (auto file_cache_entry: cached_file_data)
-    {
-        if (file_cache_entry.second != nullptr)
-            delete file_cache_entry.second;
-    }
-    cached_file_data.clear();
+    if (cached_file_data.size() > 0)
+        cached_file_data.clear();
 }
 
-void AssetManager::create_index()
+uint32_t AssetManager::get_assets_file_size()
+{
+    return file_handler.get_size();
+}
+
+void AssetManager::create_index_space()
 {
     size_t index_entry_size = sizeof(AssetFileIndexEntry);
     for (int j = 0; j < MAX_INDEX_ENTRIES; ++j)
@@ -61,7 +68,7 @@ void AssetManager::create_index()
     }
 }
 
-void AssetManager::insert_asset(std::string asset_path)
+uint32_t AssetManager::insert_asset(std::string asset_path)
 {
     if (asset_path.size() > ASSET_PATH_MAX_SIZE)
         throw AssetPathMaxSizeExceeded();
@@ -77,31 +84,37 @@ void AssetManager::insert_asset(std::string asset_path)
     
     file_handler.write_byte(0); // TODO: ASSET FILE TYPE
 
-    GMFile added_file_handler = GMFile(asset_path, GMFileType::BINARY, GMFileMode::READ);
-    added_file_handler.open();
+    GMFile added_file_handler = file_service->open_file(asset_path, GMFileType::BINARY, GMFileMode::READ);
     file_handler.write_bytes_from_file(added_file_handler);
-    added_file_handler.close();
+    file_service->close_file(asset_path);
 
     uint32_t added_file_end = file_handler.get_cursor_position();
     file_handler.seek(end_address_position);
     file_handler.write_dword(added_file_end);
 
-    create_and_insert_index_entry(asset_path, asset_position);
+    return asset_position;
 }
 
-void AssetsFile::create_and_insert_index_entry(std::string asset_path, uint32_t asset_position)
+void AssetManager::create_index_entry(std::string asset_path, uint32_t asset_position, AssetFileIndexEntry* entries)
 {
     uint32_t index = get_index_from_path(asset_path);
     uint32_t starting_point = index;
-    while (check_if_index_position_is_filled(index))
+    while (entries[index].address != 0)
     {
         index = (index + 1) % MAX_INDEX_ENTRIES;
         if (index == starting_point)
             throw AssetsFileIndexIsFull();
     }
-    file_handler.seek(index * sizeof(AssetFileIndexEntry));
-    file_handler.write_padded_string(asset_path, 0, ASSET_PATH_MAX_SIZE);
-    file_handler.write_dword(asset_position);
+    for (int i = 0; i < asset_path.size(); ++i)
+        entries[index].path[i] = asset_path[i];
+    entries[index].address = asset_position;
+}
+
+void AssetManager::write_index(uint32_t position, AssetFileIndexEntry &entry)
+{
+    file_handler.seek(position * sizeof(AssetFileIndexEntry));
+    file_handler.write_padded_string(std::string(entry.path), 0, ASSET_PATH_MAX_SIZE);
+    file_handler.write_dword(entry.address);
 }
 
 uint32_t get_index_from_path(std::string path)
@@ -120,4 +133,13 @@ GMFileCache::~GMFileCache()
 {
     if (bytes != nullptr)
         delete bytes;
+}
+
+AssetFileIndexEntry::AssetFileIndexEntry()
+{
+    for (int i = 0; i < ASSET_PATH_MAX_SIZE; ++i)
+    {
+        path[i] = 0;
+    }
+    address = 0;
 }

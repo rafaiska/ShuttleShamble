@@ -16,7 +16,8 @@ GMManager* GMManager::get_instance() {
 }
 
 void GMManager::start_test_services() {
-    video_service = new VideoServiceMock();
+    if (video_service == nullptr)
+        video_service = new VideoServiceMock();
     start_file_service();
 }
 
@@ -27,7 +28,8 @@ void GMManager::log_error(GMObject* object, std::string message)
 
 FileService *GMManager::start_file_service()
 {
-    file_service = new FileService();
+    if (file_service == nullptr)
+        file_service = new FileService();
     return file_service;
 }
 
@@ -42,5 +44,8 @@ AssetManager *GMManager::start_asset_manager()
 void GMManager::shutdown_asset_manager()
 {
     if (asset_manager != nullptr)
+    {
         delete asset_manager;
+        asset_manager = nullptr;
+    }
 }

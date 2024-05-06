@@ -32,11 +32,11 @@ TEST_F(AssetsFileTest, test_get_index_from_path)
 
 TEST_F(AssetsFileTest, create_and_load_assets_file)
 {
-    AssetsFile* file = asset_manager->create_assets_file("src/test/assets", "test_assets.gma");
-    ASSERT_EQ(file->get_size(), 88547);
+    asset_manager->create_assets_file("src/test/assets", "test_assets.gma");
+    ASSERT_TRUE(asset_manager->is_creation_mode());
     asset_manager->close_assets_file();
 
-    file = asset_manager->load_assets_file("test_assets.gma");
-    ASSERT_EQ(file->get_size(), 88547);
+    asset_manager->load_assets_file("test_assets.gma");
+    ASSERT_EQ(asset_manager->get_assets_file_size(), 88547);
     asset_manager->close_assets_file();
 }

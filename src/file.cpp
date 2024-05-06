@@ -55,6 +55,7 @@ void GMFile::write_line(std::string line)
 
 uint8_t GMFile::read_byte()
 {
+    check_if_file_opened();
     char c = fgetc(file_pointer);
     if (c == EOF)
         throw ReachedEndOfFile();
@@ -66,6 +67,7 @@ GMFile& GMFile::operator=(const GMFile &other)
     this->path = other.path;
     this->mode = other.mode;
     this->type = other.type;
+    this->file_pointer = other.file_pointer;
     return *this;
 }
 
@@ -78,6 +80,7 @@ uint32_t GMFile::get_cursor_position()
 
 size_t GMFile::get_size()
 {
+    check_if_file_opened();
     uint32_t current_position = get_cursor_position();
     fseek(file_pointer, 0, SEEK_END);
     size_t size = get_cursor_position();
