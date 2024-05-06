@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "manager.hpp"
+#include "tinyxml2.h"
 
 class AssetsFileTest : public testing::Test {
     protected:
@@ -39,4 +40,16 @@ TEST_F(AssetsFileTest, create_and_load_assets_file)
     asset_manager->load_assets_file("test_assets.gma");
     ASSERT_EQ(asset_manager->get_assets_file_size(), 88547);
     asset_manager->close_assets_file();
+}
+
+TEST_F(AssetsFileTest, load_xml_asset)
+{
+    asset_manager->load_assets_file("test_assets.gma");
+    GMFileCache cached_file = asset_manager->load_asset("src/test/assets/sample.xml");
+    tinyxml2::XMLDocument document;
+    document.Parse((char*)cached_file.bytes, (size_t)cached_file.size);
+    ASSERT_EQ(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("name"),
+        "Passoca");
+    ASSERT_EQ(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("type"),
+        "Enemy");
 }

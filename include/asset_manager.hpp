@@ -11,15 +11,14 @@
 
 uint32_t get_index_from_path(std::string path);
 
-class GMFileCache
+struct GMFileCache
 {
     std::string path;
     uint8_t* bytes=nullptr;
     uint32_t size;
 
-    public:
-        GMFileCache(std::string path_, uint8_t* buffer, uint32_t size_);
-        ~GMFileCache();
+    GMFileCache(std::string path_, uint8_t* buffer, uint32_t size_);
+    ~GMFileCache();
 };
 
 enum AssetType
@@ -66,6 +65,7 @@ class AssetManager
         void clear_cache();
         uint32_t get_assets_file_size();
         bool is_creation_mode();
+        GMFileCache* load_asset(std::string asset_path);
 
         class AssetPathMaxSizeExceeded{};
         class AssetsFileIndexIsFull{};

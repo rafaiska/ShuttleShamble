@@ -39,6 +39,20 @@ bool AssetManager::is_creation_mode()
     return (file_handler.is_open() && file_handler.get_mode() != GMFileMode::READ);
 }
 
+GMFileCache *AssetManager::load_asset(std::string asset_path)
+{
+    if (is_creation_mode)
+        throw 1; //TODO Exception, assets must not be loaded in creation mode
+
+    if (cached_file_data.count(asset_path) > 0)
+        return cached_file_data[asset_path];
+    
+    uint32_t pos = find_asset_position(asset_path);
+    GMFileCache* cache = load_asset_to_cache(pos);
+    cached_file_data[asset_path] = cache;
+    return cache;
+}
+
 AssetManager::~AssetManager()
 {
     close_assets_file();
