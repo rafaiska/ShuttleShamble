@@ -45,11 +45,11 @@ TEST_F(AssetsFileTest, create_and_load_assets_file)
 TEST_F(AssetsFileTest, load_xml_asset)
 {
     asset_manager->load_assets_file("test_assets.gma");
-    GMFileCache cached_file = asset_manager->load_asset("src/test/assets/sample.xml");
+    GMFileCache* cached_file = asset_manager->load_asset("src/test/assets/sample.xml");
     tinyxml2::XMLDocument document;
-    document.Parse((char*)cached_file.bytes, (size_t)cached_file.size);
-    ASSERT_EQ(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("name"),
+    document.Parse((char*)cached_file->bytes, (size_t)cached_file->size);
+    ASSERT_EQ(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("name")->GetText(),
         "Passoca");
-    ASSERT_EQ(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("type"),
+    ASSERT_EQ(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("type")->GetText(),
         "Enemy");
 }

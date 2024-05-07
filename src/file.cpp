@@ -124,6 +124,17 @@ void GMFile::write_padded_string(std::string str, char padding_character, int pa
         write_byte(padding_character);
 }
 
+uint32_t GMFile::read_dword()
+{
+    uint32_t dword = 0;
+    for (int i = 3; i >= 0; --i)
+    {
+        dword = dword << 8;
+        dword += read_byte();
+    }
+    return dword;
+}
+
 void GMFile::write_byte(uint8_t byte)
 {
     putc(byte, file_pointer);

@@ -53,6 +53,10 @@ class AssetManager
         bool check_if_index_position_is_filled(uint32_t index_pos);
         void create_index_entry(std::string asset_path, uint32_t asset_position, AssetFileIndexEntry* entries);
         void write_index(uint32_t position, AssetFileIndexEntry& entry);
+        uint32_t find_asset_position(std::string asset_path);
+        AssetFileIndexEntry read_index_entry();
+        GMFileCache* load_asset_to_cache(std::string path, uint32_t asset_position);
+        AssetFileRegistryHeader read_asset_reg_header();
     public:
         AssetManager(FileService* file_service_): file_service(file_service_){}
         ~AssetManager();
@@ -69,6 +73,7 @@ class AssetManager
 
         class AssetPathMaxSizeExceeded{};
         class AssetsFileIndexIsFull{};
+        class AssetNotFoundInFile{};
 };
 
 #endif

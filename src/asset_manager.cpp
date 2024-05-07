@@ -41,14 +41,14 @@ bool AssetManager::is_creation_mode()
 
 GMFileCache *AssetManager::load_asset(std::string asset_path)
 {
-    if (is_creation_mode)
+    if (is_creation_mode())
         throw 1; //TODO Exception, assets must not be loaded in creation mode
 
     if (cached_file_data.count(asset_path) > 0)
         return cached_file_data[asset_path];
     
     uint32_t pos = find_asset_position(asset_path);
-    GMFileCache* cache = load_asset_to_cache(pos);
+    GMFileCache* cache = load_asset_to_cache(asset_path, pos);
     cached_file_data[asset_path] = cache;
     return cache;
 }
@@ -96,7 +96,7 @@ uint32_t AssetManager::insert_asset(std::string asset_path)
     uint32_t end_address_position = file_handler.get_cursor_position();
     file_handler.write_dword(0);
     
-    file_handler.write_byte(0); // TODO: ASSET FILE TYPE
+    file_handler.write_byte(3); // TODO: ASSET FILE TYPE
 
     GMFile added_file_handler = file_service->open_file(asset_path, GMFileType::BINARY, GMFileMode::READ);
     file_handler.write_bytes_from_file(added_file_handler);
@@ -131,6 +131,58 @@ void AssetManager::write_index(uint32_t position, AssetFileIndexEntry &entry)
     file_handler.write_dword(entry.address);
 }
 
+uint32_t AssetManager::find_asset_position(std::string asset_path)
+{
+    uint32_t index = get_index_from_path(asset_path);
+    uint32_t starting_index = index;
+    uint32_t asset_position = 0;
+
+    while (asset_position == 0)
+    {
+        file_handler.seek(index * sizeof(AssetFileIndexEntry));
+        AssetFileIndexEntry entry = read_index_entry();
+        if (std::string(entry.path) == asset_path)
+        {
+            asset_position = entry.address;
+        }
+        else
+        {
+            index = (index + 1) % MAX_INDEX_ENTRIES;
+            if (index == starting_index)
+                throw AssetNotFoundInFile();
+        }
+    }
+    return asset_position;
+}
+
+AssetFileIndexEntry AssetManager::read_index_entry()
+{
+    AssetFileIndexEntry entry;
+    for (int i = 0; i < ASSET_PATH_MAX_SIZE; ++i)
+        entry.path[i] = file_handler.read_byte();
+    entry.address = file_handler.read_dword();
+    return entry;
+}
+
+GMFileCache *AssetManager::load_asset_to_cache(std::string path, uint32_t asset_position)
+{
+    file_handler.seek(asset_position);
+    AssetFileRegistryHeader header = read_asset_reg_header();
+    uint32_t asset_size = header.end_address - asset_position - sizeof(AssetFileRegistryHeader);
+    uint8_t* bytes = new uint8_t[asset_size];
+    return new GMFileCache(path, bytes, asset_size);
+}
+
+AssetFileRegistryHeader AssetManager::read_asset_reg_header()
+{
+    AssetFileRegistryHeader header;
+    for (int i = 0; i < ASSET_PATH_MAX_SIZE; ++i)
+        header.path[i] = file_handler.read_byte();
+    header.end_address = file_handler.read_dword();
+    header.type = AssetType(file_handler.read_byte());
+    return header;
+}
+
 uint32_t get_index_from_path(std::string path)
 {
     XXH64_state_t* state = XXH64_createState();
@@ -141,6 +193,13 @@ uint32_t get_index_from_path(std::string path)
     XXH64_hash_t hash = XXH64_digest(state);
     XXH64_freeState(state);
     return ((uint32_t) hash) % MAX_INDEX_ENTRIES;
+}
+
+GMFileCache::GMFileCache(std::string path_, uint8_t *buffer, uint32_t size_)
+{
+    path = path_;
+    buffer = buffer;
+    size = size_;
 }
 
 GMFileCache::~GMFileCache()
