@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
+#include <tinyxml2.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 
 #include "manager.hpp"
-#include "tinyxml2.h"
 
 class AssetsFileTest : public testing::Test {
     protected:
@@ -48,8 +50,21 @@ TEST_F(AssetsFileTest, load_xml_asset)
     GMFileCache* cached_file = asset_manager->load_asset("src/test/assets/sample.xml");
     tinyxml2::XMLDocument document;
     document.Parse((char*)cached_file->bytes, (size_t)cached_file->size);
-    ASSERT_EQ(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("name")->GetText(),
+    ASSERT_EQ(std::string(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("name")->GetText()),
         "Passoca");
-    ASSERT_EQ(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("type")->GetText(),
+    ASSERT_EQ(std::string(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("type")->GetText()),
         "Enemy");
+    asset_manager->close_assets_file();
+}
+
+TEST_F(AssetsFileTest, load_png_asset)
+{
+    asset_manager->load_assets_file("test_assets.gma");
+    GMFileCache* cached_file = asset_manager->load_asset("src/test/assets/sample.png");
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Surface* png_surface = IMG_Load((char*)cached_file->bytes);
+    ASSERT_NE(png_surface, nullptr);
+    SDL_FreeSurface(png_surface);
+    SDL_Quit();
+    asset_manager->close_assets_file();
 }

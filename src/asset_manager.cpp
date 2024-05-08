@@ -21,6 +21,7 @@ void AssetManager::create_assets_file(std::string dir_path, std::string output_p
 void AssetManager::load_assets_file(std::string file_path)
 {
     file_handler = file_service->open_file(file_path, GMFileType::BINARY, GMFileMode::READ);
+    asset_file_path = file_path;
 }
 
 void AssetManager::close_assets_file()
@@ -168,9 +169,12 @@ GMFileCache *AssetManager::load_asset_to_cache(std::string path, uint32_t asset_
 {
     file_handler.seek(asset_position);
     AssetFileRegistryHeader header = read_asset_reg_header();
-    uint32_t asset_size = header.end_address - asset_position - sizeof(AssetFileRegistryHeader);
-    uint8_t* bytes = new uint8_t[asset_size];
-    return new GMFileCache(path, bytes, asset_size);
+    uint32_t asset_size = header.end_address - asset_position - sizeof(AssetFileRegistryHeader) + 3;
+    uint8_t bytes[asset_size];
+    for (int i=0; i<asset_size; ++i)
+        bytes[i] = file_handler.read_byte();
+    GMFileCache* new_cache = new GMFileCache(path, bytes, asset_size);
+    return new_cache;
 }
 
 AssetFileRegistryHeader AssetManager::read_asset_reg_header()
@@ -198,7 +202,9 @@ uint32_t get_index_from_path(std::string path)
 GMFileCache::GMFileCache(std::string path_, uint8_t *buffer, uint32_t size_)
 {
     path = path_;
-    buffer = buffer;
+    bytes = new uint8_t[size_];
+    for (int i = 0; i<size_; ++i)
+        bytes[i] = buffer[i];
     size = size_;
 }
 
