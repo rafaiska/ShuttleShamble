@@ -1,9 +1,7 @@
 #include <gtest/gtest.h>
-#include <tinyxml2.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 
 #include "manager.hpp"
+#include "test_utils.hpp"
 
 class AssetsFileTest : public testing::Test {
     protected:
@@ -40,31 +38,23 @@ TEST_F(AssetsFileTest, create_and_load_assets_file)
     asset_manager->close_assets_file();
 
     asset_manager->load_assets_file("test_assets.gma");
-    ASSERT_EQ(asset_manager->get_assets_file_size(), 88547);
+    ASSERT_EQ(asset_manager->get_assets_file_size(), 89064);
     asset_manager->close_assets_file();
 }
 
-TEST_F(AssetsFileTest, load_xml_asset)
+TEST_F(AssetsFileTest, assess_cached_files)
 {
     asset_manager->load_assets_file("test_assets.gma");
-    GMFileCache* cached_file = asset_manager->load_asset("src/test/assets/sample.xml");
-    tinyxml2::XMLDocument document;
-    document.Parse((char*)cached_file->bytes, (size_t)cached_file->size);
-    ASSERT_EQ(std::string(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("name")->GetText()),
-        "Passoca");
-    ASSERT_EQ(std::string(document.FirstChildElement("map")->FirstChildElement("object")->FirstChildElement("type")->GetText()),
-        "Enemy");
-    asset_manager->close_assets_file();
-}
 
-TEST_F(AssetsFileTest, load_png_asset)
-{
-    asset_manager->load_assets_file("test_assets.gma");
-    GMFileCache* cached_file = asset_manager->load_asset("src/test/assets/sample.png");
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Surface* png_surface = IMG_Load((char*)cached_file->bytes);
-    ASSERT_NE(png_surface, nullptr);
-    SDL_FreeSurface(png_surface);
-    SDL_Quit();
-    asset_manager->close_assets_file();
+    GMFileCache* cached_file1 = asset_manager->load_asset("src/test/assets/sample.xml");
+    GMFile file_handler1 = file_service->open_file("src/test/assets/sample.xml", GMFileType::TEXT, GMFileMode::READ);
+    ASSERT_EQ(compare_file_and_cached_file(file_handler1, *cached_file1), 0);
+
+    GMFileCache* cached_file2 = asset_manager->load_asset("src/test/assets/sample.csv");
+    GMFile file_handler2 = file_service->open_file("src/test/assets/sample.csv", GMFileType::TEXT, GMFileMode::READ);
+    ASSERT_EQ(compare_file_and_cached_file(file_handler2, *cached_file2), 0);
+
+    GMFileCache* cached_file3 = asset_manager->load_asset("src/test/assets/sample.png");
+    GMFile file_handler3 = file_service->open_file("src/test/assets/sample.png", GMFileType::BINARY, GMFileMode::READ);
+    ASSERT_EQ(compare_file_and_cached_file(file_handler3, *cached_file3), 0);
 }

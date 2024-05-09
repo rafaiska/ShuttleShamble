@@ -57,7 +57,7 @@ uint8_t GMFile::read_byte()
 {
     check_if_file_opened();
     char c = fgetc(file_pointer);
-    if (c == EOF)
+    if (c == EOF && feof(file_pointer))
         throw ReachedEndOfFile();
     return (uint8_t) c;
 }
