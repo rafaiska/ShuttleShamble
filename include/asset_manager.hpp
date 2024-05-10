@@ -3,6 +3,7 @@
 
 #include <string>
 #include <xxhash.h>
+#include <zlib.h>
 
 #include "file_service.hpp"
 

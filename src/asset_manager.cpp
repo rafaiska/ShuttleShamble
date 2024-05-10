@@ -100,7 +100,16 @@ uint32_t AssetManager::insert_asset(std::string asset_path)
     file_handler.write_byte(3); // TODO: ASSET FILE TYPE
 
     GMFile added_file_handler = file_service->open_file(asset_path, GMFileType::BINARY, GMFileMode::READ);
-    file_handler.write_bytes_from_file(added_file_handler);
+    if (!is_data_compressed)
+    {
+        file_handler.write_bytes_from_file(added_file_handler);
+    }
+    else
+    {
+        char buffer[1024];
+        z_stream stream;
+        //TODO: compress with zlib
+    }
     file_service->close_file(asset_path);
 
     uint32_t added_file_end = file_handler.get_cursor_position();
