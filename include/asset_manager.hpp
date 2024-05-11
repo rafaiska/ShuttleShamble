@@ -47,7 +47,7 @@ class AssetManager
     private:
         FileService* file_service;
         GMFile file_handler;
-        bool is_data_compressed;
+        bool is_data_compressed = false;
         std::unordered_map<std::string, GMFileCache*> cached_file_data;
         std::string asset_file_path;
 
@@ -71,6 +71,7 @@ class AssetManager
         uint32_t get_assets_file_size();
         bool is_creation_mode();
         GMFileCache* load_asset(std::string asset_path);
+        void set_compressed(bool toggle) {is_data_compressed = toggle;}
 
         class AssetPathMaxSizeExceeded{};
         class AssetsFileIndexIsFull{};

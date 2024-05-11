@@ -35,6 +35,7 @@ class GMFile
         std::string read_line();
         void write_line(std::string line);
         uint8_t read_byte();
+        uint32_t read_bytes(uint8_t* buffer, uint32_t size);
         uint16_t read_word();
         uint32_t read_dword();
         void write_byte(uint8_t byte);

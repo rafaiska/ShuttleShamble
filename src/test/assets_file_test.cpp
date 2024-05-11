@@ -58,3 +58,14 @@ TEST_F(AssetsFileTest, assess_cached_files)
     GMFile file_handler3 = file_service->open_file("src/test/assets/sample.png", GMFileType::BINARY, GMFileMode::READ);
     ASSERT_EQ(compare_file_and_cached_file(file_handler3, *cached_file3), 0);
 }
+
+TEST_F(AssetsFileTest, create_and_load_compressed_assets_file)
+{
+    asset_manager->set_compressed(true);
+    asset_manager->create_assets_file("src/test/assets", "test_assets_compressed.gma");
+    asset_manager->close_assets_file();
+
+    asset_manager->load_assets_file("test_assets_compressed.gma");
+    ASSERT_EQ(asset_manager->get_assets_file_size(), 89064);
+    asset_manager->close_assets_file();
+}

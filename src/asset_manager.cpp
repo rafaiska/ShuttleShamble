@@ -106,9 +106,31 @@ uint32_t AssetManager::insert_asset(std::string asset_path)
     }
     else
     {
-        char buffer[1024];
+        uint8_t in_buffer[1024];
+        uint8_t out_buffer[1024];
         z_stream stream;
-        //TODO: compress with zlib
+        stream.zalloc = Z_NULL;
+        stream.zfree = Z_NULL;
+        stream.opaque = Z_NULL;
+        int z_ret = deflateInit(&stream, -1);
+        if (z_ret != Z_OK)
+            throw 1;
+        int flush = Z_NO_FLUSH;
+        while(flush != Z_FINISH)
+        {
+            uint32_t bytes_read = added_file_handler.read_bytes(in_buffer, 1024);
+            flush = bytes_read < 1024 ? Z_FINISH : Z_NO_FLUSH;
+            stream.avail_in = bytes_read;
+            stream.next_in = in_buffer;
+            stream.avail_out = 1024;
+            stream.next_out = out_buffer;
+            if (deflate(&stream, flush) == Z_STREAM_ERROR)
+                throw 1;
+            for (int i=0; i<(1024 - stream.avail_out); ++i)
+            {
+                file_handler.write_byte(out_buffer[i]);
+            }
+        }
     }
     file_service->close_file(asset_path);
 

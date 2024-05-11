@@ -62,6 +62,25 @@ uint8_t GMFile::read_byte()
     return (uint8_t) c;
 }
 
+uint32_t GMFile::read_bytes(uint8_t *buffer, uint32_t size)
+{
+    uint32_t bytes_read = 0;
+    for (int i = 0; i < size; ++i)
+    {
+        try
+        {
+            buffer[i] = read_byte();
+            bytes_read++;
+        }
+        catch(ReachedEndOfFile e)
+        {
+            for (int j = i; j < size; ++j)
+                buffer[j] = 0;
+        }
+    }
+    return bytes_read;
+}
+
 GMFile& GMFile::operator=(const GMFile &other)
 {
     this->path = other.path;
