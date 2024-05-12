@@ -97,7 +97,10 @@ uint32_t AssetManager::insert_asset(std::string asset_path)
     uint32_t end_address_position = file_handler.get_cursor_position();
     file_handler.write_dword(0);
     
-    file_handler.write_byte(3); // TODO: ASSET FILE TYPE
+    uint8_t asset_type_flags = (uint8_t)AssetType::OTHER; // TODO: ASSET FILE TYPE
+    if (is_data_compressed)
+        asset_type_flags |= ASSET_FLAGS_IS_COMPRESSED;
+    file_handler.write_byte(asset_type_flags);
 
     GMFile added_file_handler = file_service->open_file(asset_path, GMFileType::BINARY, GMFileMode::READ);
     if (!is_data_compressed)
@@ -131,6 +134,7 @@ uint32_t AssetManager::insert_asset(std::string asset_path)
                 file_handler.write_byte(out_buffer[i]);
             }
         }
+        deflateEnd(&stream);
     }
     file_service->close_file(asset_path);
 
@@ -198,14 +202,61 @@ AssetFileIndexEntry AssetManager::read_index_entry()
 
 GMFileCache *AssetManager::load_asset_to_cache(std::string path, uint32_t asset_position)
 {
+    GMFileCache* new_cache;
     file_handler.seek(asset_position);
     AssetFileRegistryHeader header = read_asset_reg_header();
     uint32_t asset_size = header.end_address - asset_position - sizeof(AssetFileRegistryHeader) + 3;
     uint8_t bytes[asset_size];
     for (int i=0; i<asset_size; ++i)
         bytes[i] = file_handler.read_byte();
-    GMFileCache* new_cache = new GMFileCache(path, bytes, asset_size);
+    if (header.is_compressed())
+    {
+        new_cache = compressed_bytes_to_file_cache(path, bytes, asset_size);
+    }
+    else
+    {
+        new_cache = new GMFileCache(path, bytes, asset_size);
+    }
     return new_cache;
+}
+
+GMFileCache* AssetManager::compressed_bytes_to_file_cache(std::string path, uint8_t *buffer, uint32_t buffer_size)
+{
+        uint8_t in_buffer[1024];
+        uint8_t out_buffer[1024];
+        std::vector<uint8_t> decompressed_bytes;
+        z_stream stream;
+        stream.zalloc = Z_NULL;
+        stream.zfree = Z_NULL;
+        stream.opaque = Z_NULL;
+        stream.next_in = Z_NULL;
+        int z_ret = inflateInit(&stream);
+        if (z_ret != Z_OK)
+            throw 1;
+        int buffer_cursor = 0;
+        while(buffer_cursor < buffer_size)
+        {
+            stream.avail_in = 0;
+            for (int i = 0; i < 1024 && (buffer_cursor + i) < buffer_size; ++i)
+            {
+                in_buffer[i] = buffer[buffer_cursor + i];
+                stream.avail_in += 1;
+            }
+            buffer_cursor += stream.avail_in;
+            stream.next_in = in_buffer;
+            stream.avail_out = 1024;
+            stream.next_out = out_buffer;
+            if (inflate(&stream, Z_NO_FLUSH) == Z_STREAM_ERROR)
+                throw 1;
+            for (int i=0; i<(1024 - stream.avail_out); ++i)
+            {
+                decompressed_bytes.push_back(out_buffer[i]);
+            }
+        }
+        uint8_t cache_bytes[decompressed_bytes.size()];
+        for (int i = 0; i < decompressed_bytes.size(); ++i)
+            cache_bytes[i] = decompressed_bytes[i];
+        return new GMFileCache(path, cache_bytes, decompressed_bytes.size());
 }
 
 AssetFileRegistryHeader AssetManager::read_asset_reg_header()
@@ -214,7 +265,7 @@ AssetFileRegistryHeader AssetManager::read_asset_reg_header()
     for (int i = 0; i < ASSET_PATH_MAX_SIZE; ++i)
         header.path[i] = file_handler.read_byte();
     header.end_address = file_handler.read_dword();
-    header.type = AssetType(file_handler.read_byte());
+    header.type_byte = file_handler.read_byte();
     return header;
 }
 

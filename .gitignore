@@ -2,3 +2,5 @@ assets/*.png
 *.out
 *.o
 *.gma
+*.tags
+*.log

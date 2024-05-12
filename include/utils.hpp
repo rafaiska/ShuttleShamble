@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <cmath>
+#include <string>
 
 struct GMRect {
     uint32_t w;
@@ -32,6 +33,16 @@ struct GMCircle
     float radius;
     GMCircle(float x=0, float y=0, float r=0);
     GMCircle& operator=(const GMCircle& other);
+};
+
+class GMException : public std::exception
+{
+    protected:
+        std::string message = "UNDEFINED_EXCEPTION";
+    public:
+        GMException(std::string message_): message(message_){}
+        const char* what() const throw() {return message.c_str();}
+        GMException& operator=(GMException& other) {this->message = other.message; return *this;}
 };
 
 GMVector get_position_from_rect(const GMRect& rect);

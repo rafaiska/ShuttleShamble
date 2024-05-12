@@ -6,6 +6,7 @@
 #include <filesystem>
 
 #include "file.hpp"
+#include "utils.hpp"
 
 class FileService
 {
@@ -25,9 +26,9 @@ class FileService
         std::vector<std::string> get_file_paths_from_dir(std::string dir_path);
         void close_all();
 
-        class ErrorOpeningFile{};
-        class FileNotOpened{};
-        class FileAlreadyOpened{};
+        class ErrorOpeningFile: public GMException {public: ErrorOpeningFile(): GMException("Error opening file"){}};
+        class FileNotOpened: public GMException {public: FileNotOpened(): GMException("File not opened"){}};
+        class FileAlreadyOpened: public GMException {public: FileAlreadyOpened(): GMException("File already opened"){}};
 };
 
 #endif

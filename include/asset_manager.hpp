@@ -9,6 +9,7 @@
 
 #define MAX_INDEX_ENTRIES 2000
 #define ASSET_PATH_MAX_SIZE 40
+#define ASSET_FLAGS_IS_COMPRESSED 0b10000000;
 
 uint32_t get_index_from_path(std::string path);
 
@@ -39,7 +40,10 @@ struct AssetFileRegistryHeader
 {
     char path[ASSET_PATH_MAX_SIZE];
     uint32_t end_address;
-    AssetType type;
+    uint8_t type_byte;
+
+    bool is_compressed() {return type_byte & ASSET_FLAGS_IS_COMPRESSED;}
+    AssetType get_type() {uint8_t type_byte_wo_cflag = type_byte & ~ASSET_FLAGS_IS_COMPRESSED; return AssetType(type_byte_wo_cflag);}
 };
 
 class AssetManager
@@ -57,6 +61,7 @@ class AssetManager
         uint32_t find_asset_position(std::string asset_path);
         AssetFileIndexEntry read_index_entry();
         GMFileCache* load_asset_to_cache(std::string path, uint32_t asset_position);
+        GMFileCache* compressed_bytes_to_file_cache(std::string path, uint8_t* buffer, uint32_t buffer_size);
         AssetFileRegistryHeader read_asset_reg_header();
     public:
         AssetManager(FileService* file_service_): file_service(file_service_){}
