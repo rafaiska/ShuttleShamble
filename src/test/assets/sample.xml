@@ -5,5 +5,5 @@
       <type>Enemy</type>
       <hp>12</hp>
       <maxhp>20</maxhp>
-    </object>
+   </object>
 </map>

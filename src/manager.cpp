@@ -37,15 +37,7 @@ AssetManager *GMManager::start_asset_manager()
 {
     if (file_service == nullptr)
         throw FileServiceMustBeInitialized();
-    asset_manager = new AssetManager(file_service);
+    if (asset_manager == nullptr)
+        asset_manager = new AssetManager(file_service);
     return asset_manager;
-}
-
-void GMManager::shutdown_asset_manager()
-{
-    if (asset_manager != nullptr)
-    {
-        delete asset_manager;
-        asset_manager = nullptr;
-    }
 }

@@ -28,7 +28,6 @@ class GMManager {
         FileService* start_file_service();
         AssetManager* start_asset_manager();
         AssetManager* get_asset_manager() {return asset_manager;}
-        void shutdown_asset_manager();
 
         class FileServiceMustBeInitialized{};
 };

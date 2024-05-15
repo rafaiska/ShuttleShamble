@@ -3,12 +3,17 @@
 #include <set>
 
 #include "data_tree.hpp"
+#include "manager.hpp"
 
 class DataTreeTest : public testing::Test {
     protected:
         GMDataTree* data_tree;
+        GMManager* manager;
 
-        DataTreeTest(){}
+        DataTreeTest()
+        {
+            manager = GMManager::get_instance();
+        }
 
         void SetUp() override {
             data_tree = new GMDataTree();
@@ -19,30 +24,15 @@ class DataTreeTest : public testing::Test {
         }
 };
 
-TEST_F(DataTreeTest, test_all_nodes) {
-    GMDataTreeNode* amendo_node = data_tree->get_root()->insert_child("amendoim_nuts", "AN");
-    amendo_node->insert_child("passoca", "PS");
-    amendo_node->insert_child("lads_foot", "LF");
-    amendo_node->insert_child("quebraquexo", "QQ")->insert_child("caramel", "CM");
-
-    std::set<std::string> node_names;
-    for (GMDataTreeNode* node: data_tree->all_nodes())
-    {
-        node_names.insert(node->get_name());
-    }
-
-    ASSERT_EQ(node_names.size(), 6);
-    ASSERT_TRUE(node_names.count("ROOT"));
-    ASSERT_TRUE(node_names.count("amendoim_nuts"));
-    ASSERT_TRUE(node_names.count("passoca"));
-    ASSERT_TRUE(node_names.count("lads_foot"));
-    ASSERT_TRUE(node_names.count("quebraquexo"));
-    ASSERT_TRUE(node_names.count("caramel"));
-}
-
-TEST_F(DataTreeTest, insert_nodes_into_tree) {
-    data_tree->get_root()->insert_child("passoca", "PS")->insert_child("amendoim", "AD")->add_param("qt", "101");
-    GMDataTreeNode* node = data_tree->get_root()->get_child("passoca")->get_child("amendoim");
-
-    ASSERT_EQ(node->get_param("qt"), "101");
+TEST_F(DataTreeTest, test_load_from_xml) {
+    manager->start_file_service();
+    AssetManager* a_manager = manager->start_asset_manager();
+    a_manager->create_assets_file("src/test/assets", "test_assets.gma");
+    a_manager->close_assets_file();
+    a_manager->load_assets_file("test_assets.gma");
+    GMFileCache* cached = a_manager->load_asset("src/test/assets/sample.xml");
+    load_from_buffer(*data_tree, cached->bytes, cached->size);
+    ASSERT_EQ(std::string(data_tree->FirstChildElement("map")->Attribute("id")), "1");
+    ASSERT_EQ(std::string(data_tree->FirstChildElement("map")->FirstChildElement("object")->Attribute("id")), "1912");
+    a_manager->close_assets_file();
 }

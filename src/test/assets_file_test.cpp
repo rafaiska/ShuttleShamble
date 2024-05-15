@@ -53,7 +53,7 @@ TEST_F(AssetsFileTest, create_and_load_assets_file)
     asset_manager->close_assets_file();
 
     asset_manager->load_assets_file("test_assets.gma");
-    ASSERT_EQ(asset_manager->get_assets_file_size(), 89064);
+    ASSERT_EQ(asset_manager->get_assets_file_size(), 89063);
     asset_manager->close_assets_file();
 }
 
