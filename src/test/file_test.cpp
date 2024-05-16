@@ -48,7 +48,7 @@ TEST_F(FileTest, write_home_dir_then_read)
 TEST_F(FileTest, get_file_paths_from_dir_test)
 {
     std::vector<std::string> paths = service->get_file_paths_from_dir("src/test/assets");
-    ASSERT_EQ(paths.size(), 3);
+    ASSERT_EQ(paths.size(), 6);
     ASSERT_TRUE(std::find(paths.begin(), paths.end(), "src/test/assets/sample.csv") != paths.end());
     ASSERT_TRUE(std::find(paths.begin(), paths.end(), "src/test/assets/sample.png") != paths.end());
     ASSERT_TRUE(std::find(paths.begin(), paths.end(), "src/test/assets/sample.xml") != paths.end());

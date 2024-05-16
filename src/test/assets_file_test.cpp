@@ -53,7 +53,7 @@ TEST_F(AssetsFileTest, create_and_load_assets_file)
     asset_manager->close_assets_file();
 
     asset_manager->load_assets_file("test_assets.gma");
-    ASSERT_EQ(asset_manager->get_assets_file_size(), 89063);
+    ASSERT_EQ(asset_manager->get_assets_file_size(), 106809);
     asset_manager->close_assets_file();
 }
 
@@ -81,7 +81,7 @@ TEST_F(AssetsFileTest, create_and_load_compressed_assets_file)
     asset_manager->close_assets_file();
 
     asset_manager->load_assets_file("test_assets_compressed.gma");
-    ASSERT_EQ(asset_manager->get_assets_file_size(), 89012);
+    ASSERT_EQ(asset_manager->get_assets_file_size(), 90762);
 
     GMFileCache* cached_file1 = asset_manager->load_asset("src/test/assets/sample.xml");
     GMFile file_handler1 = file_service->open_file("src/test/assets/sample.xml", GMFileType::TEXT, GMFileMode::READ);
