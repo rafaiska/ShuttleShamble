@@ -63,3 +63,8 @@ void FileService::close_all()
     }
     opened_files.clear();
 }
+
+bool FileService::file_exists(std::string file_path)
+{
+    return std::filesystem::exists(file_path);
+}

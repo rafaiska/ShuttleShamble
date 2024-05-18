@@ -25,6 +25,7 @@ class FileService
         uint32_t n_files_opened() {return opened_files.size();}
         std::vector<std::string> get_file_paths_from_dir(std::string dir_path);
         void close_all();
+        bool file_exists(std::string file_path);
 
         class ErrorOpeningFile: public GMException {public: ErrorOpeningFile(): GMException("Error opening file"){}};
         class FileNotOpened: public GMException {public: FileNotOpened(): GMException("File not opened"){}};
