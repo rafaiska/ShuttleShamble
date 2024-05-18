@@ -2,6 +2,7 @@
 #define _DATA_TREE_H_
 
 #define GMDataTree tinyxml2::XMLDocument
+#define GMDataNode tinyxml2::XMLElement
 
 #include <string>
 #include <vector>
