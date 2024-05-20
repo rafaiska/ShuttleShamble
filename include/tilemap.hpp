@@ -6,23 +6,24 @@
 #include "tile.hpp"
 #include "data_tree.hpp"
 
-class GMTileFrames
+class GMAnimatedTile
 {
     std::vector<uint32_t> frames;
+    std::vector<uint32_t> frames_duration_ms;
     uint8_t current_frame;
     uint8_t animation_mode;
 };
 
 class GMTileLayer
 {
-    std::vector<GMTileFrames> map;
+    std::vector<GMAnimatedTile> map;
     std::vector<uint32_t> animated_tiles_indexes;
 };
 
 class GMTileMap
 {
     std::vector<GMTileLayer> layers;
-    std::vector<GMTile> tileset;
+    std::vector<GMAnimatedTile> tileset;
     u_int32_t w;
     u_int32_t h;
     u_int8_t tile_size_h;
