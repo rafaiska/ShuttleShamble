@@ -2,9 +2,11 @@
 #define _GMTILEMAP_HPP_
 
 #include <vector>
+#include <tinyxml2.h>
+
+using namespace tinyxml2;
 
 #include "tile.hpp"
-#include "data_tree.hpp"
 
 class GMAnimatedTile
 {
@@ -31,8 +33,8 @@ class GMTileMap
 
     public:
         bool was_tileset_loaded() {return tileset.size() > 0;}
-        void load_tileset_from_tiled_data_tree(GMDataTree& data_tree);
-        void load_tilemap_from_tiled_data_tree(GMDataTree& data_tree);
+        void load_tileset_from_tiled_xml(XMLDocument& xml_doc);
+        void load_tilemap_from_tiled_xml(XMLDocument& xml_doc);
 };
 
 #endif

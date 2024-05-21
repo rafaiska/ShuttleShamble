@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <set>
 
-#include "data_tree.hpp"
 #include "manager.hpp"
 #include "tilemap.hpp"
 
@@ -34,9 +33,9 @@ TEST_F(TileMapTest, test_load_from_tiled) {
     }
     asset_manager->load_assets_file("test_assets.gma");
     GMFileCache* cached = asset_manager->load_asset("src/test/assets/TestMap.tmx");
-    GMDataTree data_tree;
-    load_from_buffer(data_tree, cached->bytes, cached->size);
+    XMLDocument xml_doc;
+    xml_doc.Parse((char*) cached->bytes, cached->size);
     GMTileMap map;
-    map.load_tileset_from_tiled_data_tree(data_tree);
-    map.load_tilemap_from_tiled_data_tree(data_tree);
+    map.load_tileset_from_tiled_xml(xml_doc);
+    map.load_tilemap_from_tiled_xml(xml_doc);
 }
