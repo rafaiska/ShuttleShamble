@@ -1,42 +1,27 @@
-#include <iostream>
-#include <vector>
+#include <SDL2/SDL.h>
 
-class Passoca
-{
-    public:
-        int a;
-        int b;
-        int c;
-        Passoca(int a, int b, int c) {this-> a = a; this-> b = b; this-> c = c;}
-};
+void setUpSurface(SDL_Surface* surface) {
 
-void probe(std::vector<Passoca*>& vv)
-{
-    for (Passoca* pp: vv)
-    {
-        pp->a += 1;
-        pp->b += 2;
-        pp->c += 3;
-        std::cout << pp->a << pp->b << pp->c << '\n';
-    }
+}
+
+void drawImage(SDL_Surface* surface) {
+    for(int i = 0; i < 144; i++)
+        for(int j = 0; j < 160; j++)
+            ((uint8_t*)surface->pixels)[(160*i) + j] = (uint8_t)((i + 1) / 36);
 }
 
 int main(int argc, char* argv[])
 {
-    std::vector<Passoca*> v;
+    SDL_Init(SDL_INIT_VIDEO);
 
-    v.push_back(new Passoca(1, 2, 3));
-    v.push_back(new Passoca(4, 5, 6));
-    v.push_back(new Passoca(7, 8, 9));
+    SDL_Window* window = SDL_CreateWindow("Maroto", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 160, 144, SDL_WINDOW_SHOWN);
+    SDL_Surface* surface = SDL_GetWindowSurface(window);
 
-    probe(v);
+    setUpSurface(surface);
+    drawImage(surface);
+    SDL_UpdateWindowSurface(window);
 
-    for (Passoca* p: v)
-    {
-        std::cout << p->a << p->b << p->c << '\n';
-        delete p;
-    }
-    v.clear();
+    SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
-    return 0;
+    SDL_Quit();
 }
