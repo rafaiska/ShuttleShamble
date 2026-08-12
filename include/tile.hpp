@@ -4,22 +4,13 @@
 #include "image.hpp"
 #include "utils.hpp"
 
-class GMTile {
-    GMImage2D image;
-    GMRect boundaries;
-    uint8_t size;
+typedef struct GMTile {
+    uint8_t tile_id;
+    uint8_t pixels_data[16];
+    uint8_t palette_id;
+} GMTile;
 
-    public:
-        GMTile(GMImage2D image_, GMRect boundaries_);
-        ~GMTile(){}
-        void set_image(std::string path, uint16_t w, uint16_t h);
-        void set_boundaries(uint16_t x, uint16_t y, uint16_t w, uint16_t h);
-        GMRect get_boundaries() const {return boundaries;}
-        GMImage2D get_image() const {return image;}
-        bool operator==(const GMTile& other) const;
-        uint8_t get_size(){return size;}
-
-        class TilesShouldBeSquare{};
-};
+uint8_t gmtile_get_pixel_value(const GMTile &tile, uint8_t &x, uint8_t &y);
+void gmtile_set_pixel_value(GMTile &tile, uint8_t &x, uint8_t &y, uint8_t &value);
 
 #endif
