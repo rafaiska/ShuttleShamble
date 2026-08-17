@@ -1,6 +1,9 @@
 LANG = en_US.UTF-8
 CFLAGS = -Iinclude -I/usr/include/SDL -Wfatal-errors -std=c++17
 
+new_video_service: obj/tile.o obj/test/test_tile.o
+	g++ -g -o nvs.out $^ -lSDL -lgtest -lgtest_main -pthread ${CFLAGS}
+
 video_service_basic: obj/tile.o obj/utils.o obj/image.o obj/video_service_sdl1.o obj/test/video_service_basic.o
 	g++ -g -o video_service_basic.out $^ -lSDL -lSDL_image ${CFLAGS}
 

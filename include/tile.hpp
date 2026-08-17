@@ -1,8 +1,7 @@
 #ifndef _TILE_H_
 #define _TILE_H_
 
-#include "image.hpp"
-#include "utils.hpp"
+#include <stdint.h>
 
 typedef struct GMTile {
     uint8_t tile_id;

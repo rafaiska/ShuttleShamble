@@ -1,0 +1,19 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinclude",
+      "-I/usr/include/SDL",
+      "-Wfatal-errors",
+      "-std=c++17",
+      "-c",
+      "-g",
+      "-o",
+      "obj/test/test_tile.o",
+      "src/test/test_tile.cpp"
+    ],
+    "directory": "/home/rafael/Projetos/ShuttleShamble",
+    "file": "/home/rafael/Projetos/ShuttleShamble/src/test/test_tile.cpp",
+    "output": "/home/rafael/Projetos/ShuttleShamble/obj/test/test_tile.o"
+  }
+]
